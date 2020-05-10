@@ -7,6 +7,13 @@ import { HomeComponent } from './pages/home/home.component';
 import { HeaderComponent } from './pages/header/header.component';
 import { FooterComponent } from './pages/footer/footer.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AccountComponent } from './pages/account/account.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { ProductComponent } from './pages/product/product.component';
+import { VarientComponent } from './pages/varient/varient.component';
+import { OrderComponent } from './pages/order/order.component';
+import { UserComponent } from './pages/user/user.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -14,11 +21,18 @@ import { LoginComponent } from './pages/login/login.component';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    AccountComponent,
+    CategoryComponent,
+    ProductComponent,
+    VarientComponent,
+    OrderComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

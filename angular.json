@@ -24,6 +24,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -90,7 +91,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./nodemodules/chart.js/dist/Chart.min.js"
+            ]
           }
         },
         "lint": {
@@ -119,6 +122,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "E-Commerce-Platform-Admin-Dashboard"
 }

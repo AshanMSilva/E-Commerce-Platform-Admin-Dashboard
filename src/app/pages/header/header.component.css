@@ -1,0 +1,30 @@
+#navbar {
+    background-color: rgb(30, 4, 65) !important; /* Black background color */
+    position: fixed; /* Make it stick/fixed */
+    top: 0; /* Stay on top */
+    width: 100%; /* Full width */
+    transition: top 0.3s; /* Transition effect when sliding down (and up) */
+    z-index: 100;
+  }
+  
+  /* Style the navbar links */
+  #navbar a {
+    float: left;
+    display: block;
+    color: rgb(215, 210, 240);
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+  }
+  
+  #navbar a:hover {
+    background-color: rgb(30, 4, 65);
+    color: rgb(124, 134, 223);
+  }
+  .nav-toggler-button{
+    color: rgb(215, 210, 240); 
+    border-color:  rgb(215, 210, 240) ;
+  }
+  .form-link{
+    cursor: pointer;
+}
