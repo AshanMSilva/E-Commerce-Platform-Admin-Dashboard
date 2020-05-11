@@ -7,13 +7,17 @@ import { OrderComponent } from './pages/order/order.component';
 import { UserComponent } from './pages/user/user.component';
 import { ProductComponent } from './pages/product/product.component';
 import { CategoryComponent } from './pages/category/category.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { VarientComponent } from './pages/varient/varient.component';
 
 
 const routes: Routes = [
   {path: 'home', component:HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'account', component: AccountComponent},
-  {path: 'categories', component: CategoryComponent},
+  {path: 'categories', component: CategoriesComponent},
+  {path: 'category', component: CategoryComponent},
+  {path: 'product', component: VarientComponent},
   {path: 'products', component: ProductComponent},
   {path: 'users', component: UserComponent},
   {path: 'orders', component: OrderComponent},

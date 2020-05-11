@@ -1,0 +1,9 @@
+.banner{
+    background-image: url('../../../assets/images/background.jpg');
+    height: 500px;
+}
+.page-title{
+    text-align: right;
+    padding-top: 300px;
+    font-size: 60px;
+}

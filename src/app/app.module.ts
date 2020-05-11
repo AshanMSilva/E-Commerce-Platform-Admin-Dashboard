@@ -14,6 +14,7 @@ import { VarientComponent } from './pages/varient/varient.component';
 import { OrderComponent } from './pages/order/order.component';
 import { UserComponent } from './pages/user/user.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CategoriesComponent } from './pages/categories/categories.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProductComponent,
     VarientComponent,
     OrderComponent,
-    UserComponent
+    UserComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
