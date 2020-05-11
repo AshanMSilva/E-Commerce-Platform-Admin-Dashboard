@@ -33,15 +33,15 @@ export class CategoryService {
       })
     };
 
-    return this.http.put<Category>(baseURL +'categories/'+category.id,category,httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Category>(baseURL +'categories/'+category._id,category,httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewCategory(category: Category):Observable<Category>{
+  addNewCategory(body:any):Observable<Category>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
-    return this.http.post<Category>(baseURL+ 'categories',category,httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.post<Category>(baseURL+ 'categories',body,httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewSubCategory(categoryId:number, subcategoryId:number):Observable<Category>{
     const httpOptions ={

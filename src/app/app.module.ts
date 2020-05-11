@@ -15,6 +15,12 @@ import { OrderComponent } from './pages/order/order.component';
 import { UserComponent } from './pages/user/user.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesComponent } from './pages/categories/categories.component';
+import { UsersComponent } from './pages/users/users.component';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { UploadService } from './services/uploadService/upload.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CategoryService } from './services/categoryService/category.service';
+import { baseURL } from './shared/baseurl';
 
 @NgModule({
   declarations: [
@@ -29,14 +35,22 @@ import { CategoriesComponent } from './pages/categories/categories.component';
     VarientComponent,
     OrderComponent,
     UserComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    UploadService,
+    CategoryService,
+    {provide: 'BaseURL', useValue:baseURL}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

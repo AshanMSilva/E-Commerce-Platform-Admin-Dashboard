@@ -24,6 +24,8 @@
         </div>
         <br>
         <br>
+
+        <button class="btn" (click)="open(categoryContent,'md')">New Category</button>
         <table class="table table-striped">
             <thead>
               <tr>
@@ -56,3 +58,31 @@
           </table>
     </div>
 </div>
+
+<ng-template #categoryContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title modal-header-font" id="modal-basic-title">New Category</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="categoryForm" (ngSubmit)="onCategorySubmit(); modal.dismiss()">
+      
+      <div class="form-group">
+        <label for="name"[ngStyle]="{'color':categoryFormErrors.name !== '' ? 'red !important': '' }" class="form-label">Category Name</label>
+        <input type="text"[ngStyle]="{'border-color':categoryFormErrors.name !== '' ? 'red': '' }" placeholder="Category Name" class="form-control" formControlName="name" required>
+        <p class="form-error" *ngIf="categoryFormErrors.name">{{categoryFormErrors.name}}</p>
+      </div>
+      <div class="form-group">
+        <label for="image" [ngStyle]="{'color':categoryFormErrors.image !== '' ? 'red !important': '' }" class="form-label">Image</label>
+        <input type="file" [ngStyle]="{'border-color':categoryFormErrors.image !== '' ? 'red': '' }" placeholder="Image" (change)="selectImage($event)" class="form-control" formControlName="image" accept="image/*" required>
+        <p class="form-error" *ngIf="categoryFormErrors.image">{{categoryFormErrors.image}}</p>
+      </div>
+     
+      <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="categoryForm.invalid">Add Category</button>
+    </form>
+      
+    
+  </div>
+</ng-template>

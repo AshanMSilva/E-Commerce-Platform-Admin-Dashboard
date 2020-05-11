@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { baseURL } from '../../shared/baseUrl';
+import { baseURL } from '../../shared/baseurl';
 import { ProcessHttpmsgService } from '../processHttpmsgService/process-httpmsg.service';
 
 interface AuthResponse {

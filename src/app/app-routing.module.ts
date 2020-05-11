@@ -9,6 +9,7 @@ import { ProductComponent } from './pages/product/product.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { VarientComponent } from './pages/varient/varient.component';
+import { UsersComponent } from './pages/users/users.component';
 
 
 const routes: Routes = [
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path: 'category', component: CategoryComponent},
   {path: 'product', component: VarientComponent},
   {path: 'products', component: ProductComponent},
-  {path: 'users', component: UserComponent},
+  {path: 'users', component: UsersComponent},
+  {path: 'user', component: UserComponent},
   {path: 'orders', component: OrderComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];

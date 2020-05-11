@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import * as CanvasJS from '../../../assets/canvasjs.min'
+import{FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UploadService } from 'src/app/services/uploadService/upload.service';
+import { CategoryService } from 'src/app/services/categoryService/category.service';
+import { Category } from 'src/app/shared/category';
+
 
 @Component({
   selector: 'app-categories',
@@ -8,9 +14,107 @@ import * as CanvasJS from '../../../assets/canvasjs.min'
 })
 export class CategoriesComponent implements OnInit {
 
-  constructor() { }
+  
+  file:any;
+  err:String;
+  image;
+  categoryName: String;
+  category: Category;
+  categoryForm:FormGroup;
+  categoryFormErrors ={
+    'name':'',
+    'image':''
+  };
+  categoryValidationMessages ={
+    'name':{
+      'required': 'Category Name is required',
+    },
+    'image':{
+      'required': 'Image is required'
+    }
+  };
+
+  constructor(
+    private modalService: NgbModal,
+    private formBuilder: FormBuilder,
+    private uploadService: UploadService,
+    private categoryService: CategoryService,
+    @Inject('BaseURL') private BaseURL
+  ) { }
+  
+  onCategorySubmit(){
+    // console.log(typeof(this.categoryForm.value['image']));
+    this.categoryName = this.categoryForm.value['name']
+    const formData = new FormData();
+    formData.append('imageFile', this.image);
+    this.uploadService.uploadCategoryImage(formData).subscribe(file =>{
+      if(file){
+        
+      let body ={
+        name: this.categoryName,
+        image: file.filename
+      }
+      this.categoryService.addNewCategory(body).subscribe(category =>{
+        this.category = category;
+        console.log(this.category._id);
+      }, err => this.err=err);
+    }
+      
+    }, err => this.err=err);
+    // this.categoryService.addNewCategory(this.body).subscribe(categories =>this.res = categories, err => this.err=err);
+    
+    this.categoryForm.reset({
+      name:'',
+      image:''
+    });
+  }
+
+  open(content, modalSize) {
+    this.modalService.open(content, {size:modalSize});
+  }
+  
+  createCategoryForm(){
+    this.categoryForm =this.formBuilder.group({
+      name:['',[Validators.required]],
+      image:['',[Validators.required]]
+    });
+    this.categoryForm.valueChanges.subscribe(data=>this.onValueChanged());
+    this.onValueChanged(); //reset form validation messages
+  }
+
+  onValueChanged(){
+    if(!this.categoryForm){
+      return;
+    }
+    const form =this.categoryForm;
+    for(const field in this.categoryFormErrors){
+      if(this.categoryFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.categoryFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.categoryValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.categoryFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
+  }
+
 
   ngOnInit(): void {
+
+    this.createCategoryForm();
+
     let categoryChart = new CanvasJS.Chart("categories", {
       animationEnabled: true,
       exportEnabled: true,
