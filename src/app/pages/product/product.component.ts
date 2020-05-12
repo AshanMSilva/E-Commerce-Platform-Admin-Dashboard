@@ -78,7 +78,8 @@ export class ProductComponent implements OnInit {
     
     this.productForm.reset({
       name:'',
-      image:''
+      image:'',
+      brand:''
     });
   }
 
