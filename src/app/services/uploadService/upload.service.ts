@@ -12,10 +12,22 @@ export class UploadService {
 
   constructor(private http: HttpClient, private processHTTPMsgService : ProcessHttpmsgService) { }
 
-  uploadCategoryImage(file: any):Observable<any>{
+  uploadCategoryImage(id:number, file: any):Observable<any>{
     const httpOptions ={
       
     };
-    return this.http.post<any>('http://localhost:3000/'+ 'imageUpload/category', file).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.post<any>(baseURL+ 'imageUpload/category/'+id, file).pipe(catchError(this.processHTTPMsgService.handleError));
+  }
+  uploadProductImage(id:number, file: any):Observable<any>{
+    const httpOptions ={
+      
+    };
+    return this.http.post<any>(baseURL+ 'imageUpload/product/'+id, file).pipe(catchError(this.processHTTPMsgService.handleError));
+  }
+  uploadPofilePicture(id:number, file: any):Observable<any>{
+    const httpOptions ={
+      
+    };
+    return this.http.post<any>(baseURL+ 'imageUpload/profilePicture/'+id, file).pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }

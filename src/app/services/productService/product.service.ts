@@ -24,16 +24,16 @@ export class ProductService {
   getTopProducts(): Observable<Product[]>{
     return this.http.get<Product[]>(baseURL+'products?topProduct=true').pipe(map(products=>products)).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  updateProduct(product:Product): Observable<Product>{
+  updateProduct(id:number, product:any): Observable<Product>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
 
-    return this.http.put<Product>(baseURL +'products/'+product.id, product, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Product>(baseURL +'products/'+id, product, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewProduct(product: Product):Observable<Product>{
+  addNewProduct(product:any):Observable<Product>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'

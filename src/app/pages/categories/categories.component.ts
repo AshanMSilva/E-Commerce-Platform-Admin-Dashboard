@@ -51,20 +51,22 @@ export class CategoriesComponent implements OnInit {
     this.categoryName = this.categoryForm.value['name']
     const formData = new FormData();
     formData.append('imageFile', this.image);
-    this.uploadService.uploadCategoryImage(formData).subscribe(file =>{
-      if(file){
-        
-      let body ={
-        name: this.categoryName,
-        image: file.filename
-      }
-      this.categoryService.addNewCategory(body).subscribe(category =>{
-        this.category = category;
-        console.log(this.category._id);
-      }, err => this.err=err);
+    let body ={
+      name: this.categoryName
     }
-      
-    }, err => this.err=err);
+    this.categoryService.addNewCategory(body).subscribe(category =>{
+      if(category){
+        this.uploadService.uploadCategoryImage(category._id, formData).subscribe(file =>{
+          if(file){
+            let imageName = file.filename;
+            this.categoryService.updateCategory(category._id, {"image":imageName}).subscribe(cat =>{
+              this.category = cat;
+            }, err => this.err = err)
+          }
+        },err => this.err = err)
+      }
+    },err => this.err = err)
+    
     // this.categoryService.addNewCategory(this.body).subscribe(categories =>this.res = categories, err => this.err=err);
     
     this.categoryForm.reset({

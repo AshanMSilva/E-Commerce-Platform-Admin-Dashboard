@@ -24,6 +24,7 @@
         </div>
         <br>
         <br>
+        <button class="btn" (click)="open(productContent,'md')">New Product</button>
         <table class="table table-striped">
             <thead>
               <tr>
@@ -56,4 +57,37 @@
           </table>
     </div>
 </div>
+
+<ng-template #productContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title modal-header-font" id="modal-basic-title">New Product</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="productForm" (ngSubmit)="onProductSubmit(); modal.dismiss()">
+      
+      <div class="form-group">
+        <label for="name"[ngStyle]="{'color':productFormErrors.name !== '' ? 'red !important': '' }" class="form-label">Product Name</label>
+        <input type="text"[ngStyle]="{'border-color':productFormErrors.name !== '' ? 'red': '' }" placeholder="Product Name" class="form-control" formControlName="name" required>
+        <p class="form-error" *ngIf="productFormErrors.name">{{productFormErrors.name}}</p>
+      </div>
+      <div class="form-group">
+        <label for="brand"[ngStyle]="{'color':productFormErrors.brand !== '' ? 'red !important': '' }" class="form-label">Product Brand</label>
+        <input type="text"[ngStyle]="{'border-color':productFormErrors.brand !== '' ? 'red': '' }" placeholder="Product Brand" class="form-control" formControlName="brand" required>
+        <p class="form-error" *ngIf="productFormErrors.brand">{{productFormErrors.brand}}</p>
+      </div>
+      <div class="form-group">
+        <label for="image" [ngStyle]="{'color':productFormErrors.image !== '' ? 'red !important': '' }" class="form-label">Image</label>
+        <input type="file" [ngStyle]="{'border-color':productFormErrors.image !== '' ? 'red': '' }" placeholder="Image" (change)="selectImage($event)" class="form-control" formControlName="image" accept="image/*" required>
+        <p class="form-error" *ngIf="productFormErrors.image">{{productFormErrors.image}}</p>
+      </div>
+     
+      <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="productForm.invalid">Add Product</button>
+    </form>
+      
+    
+  </div>
+</ng-template>
 

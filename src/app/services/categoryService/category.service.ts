@@ -26,14 +26,14 @@ export class CategoryService {
   getTopCategories(): Observable<Category[]>{
     return this.http.get<Category[]>(baseURL+'categories?topCategory=true').pipe(map(categories=>categories)).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  updateCategory(category:Category): Observable<Category>{
+  updateCategory(id:number, body:any): Observable<Category>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
 
-    return this.http.put<Category>(baseURL +'categories/'+category._id,category,httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Category>(baseURL +'categories/'+id,body,httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewCategory(body:any):Observable<Category>{
     const httpOptions ={

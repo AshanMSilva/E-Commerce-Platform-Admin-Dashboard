@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import * as CanvasJS from '../../../assets/canvasjs.min'
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Category } from 'src/app/shared/category';
+import { UploadService } from 'src/app/services/uploadService/upload.service';
+import { CategoryService } from 'src/app/services/categoryService/category.service';
+import { Product } from 'src/app/shared/product';
+import { ProductService } from 'src/app/services/productService/product.service';
 
 @Component({
   selector: 'app-product',
@@ -10,15 +17,118 @@ import { Router } from '@angular/router';
 })
 export class ProductComponent implements OnInit {
 
+  file:any;
+  err:String;
+  image;
+  productName: String;
+  productBrand: String;
+  product: Product;
+  productForm:FormGroup;
+  productFormErrors ={
+    'name':'',
+    'brand': '',
+    'image':''
+  };
+  productValidationMessages ={
+    'name':{
+      'required': 'Category Name is required',
+    },
+    'brand':{
+      'required': 'Category Name is required',
+    },
+    'image':{
+      'required': 'Image is required'
+    }
+  };
+
   constructor(
-    private authService:AuthService,
-    private router: Router
+    private modalService: NgbModal,
+    private formBuilder: FormBuilder,
+    private uploadService: UploadService,
+    private productService: ProductService,
+    private authService: AuthService,
+    private router: Router,
+    @Inject('BaseURL') private BaseURL
   ) { }
+  
+  onProductSubmit(){
+    // console.log(typeof(this.categoryForm.value['image']));
+    this.productName = this.productForm.value['name'];
+    this.productBrand = this.productForm.value['brand'];
+    const formData = new FormData();
+    formData.append('imageFile', this.image);
+    let body ={
+      name: this.productName,
+      brand: this.productBrand
+    }
+    this.productService.addNewProduct(body).subscribe(product =>{
+      if(product){
+        this.uploadService.uploadProductImage(product._id, formData).subscribe(file =>{
+          if(file){
+            let imageName = file.filename;
+            this.productService.updateProduct(product._id, {"image":imageName}).subscribe(prod =>{
+              this.product = prod;
+            }, err => this.err = err)
+          }
+        },err => this.err = err)
+      }
+    },err => this.err = err)
+    
+    // this.categoryService.addNewCategory(this.body).subscribe(categories =>this.res = categories, err => this.err=err);
+    
+    this.productForm.reset({
+      name:'',
+      image:''
+    });
+  }
+
+  open(content, modalSize) {
+    this.modalService.open(content, {size:modalSize});
+  }
+  
+  createProductForm(){
+    this.productForm =this.formBuilder.group({
+      name:['',[Validators.required]],
+      brand:['', [Validators.required]],
+      image:['',[Validators.required]]
+    });
+    this.productForm.valueChanges.subscribe(data=>this.onValueChanged());
+    this.onValueChanged(); //reset form validation messages
+  }
+
+  onValueChanged(){
+    if(!this.productForm){
+      return;
+    }
+    const form =this.productForm;
+    for(const field in this.productFormErrors){
+      if(this.productFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.productFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.productValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.productFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
+  }
 
   ngOnInit(): void {
     if(this.authService.isLoggedIn() === false){
       this.router.navigate(['login']);
     }
+    this.createProductForm();
     let productChart = new CanvasJS.Chart("products", {
       animationEnabled: true,
       exportEnabled: true,
