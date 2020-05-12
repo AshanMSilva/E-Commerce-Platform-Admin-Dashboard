@@ -1,1 +1,43 @@
-<p>login works!</p>
+<div class="content">
+    <div class="container">
+        <div class="row mt-4 mb-2">
+            <div class="col-12 col-lg-8 offset-lg-2">
+                <div class="card login-container">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <form novalidate [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+          
+                                    <div class="form-group">
+                                      <label for="email"[ngStyle]="{'color':loginFormErrors.email !== '' ? 'red !important': '' }" class="form-label">Email Address</label>
+                                      <input type="email"[ngStyle]="{'border-color':loginFormErrors.email !== '' ? 'red': '' }" placeholder="Email Address" class="form-control" formControlName="email" required>
+                                      <p class="form-error" *ngIf="loginFormErrors.email">{{loginFormErrors.email}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="password" [ngStyle]="{'color':loginFormErrors.password !== '' ? 'red !important': '' }" class="form-label">Password</label>
+                                      <input type="password" [ngStyle]="{'border-color':loginFormErrors.password !== '' ? 'red': '' }" placeholder="Password" class="form-control" formControlName="password" required>
+                                      <p class="form-error" *ngIf="loginFormErrors.password">{{loginFormErrors.password}}</p>
+                                    </div>
+                                   
+                                    <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="loginForm.invalid">Login</button>
+                                </form>
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <a href="" class="text-muted form-link">Forgot Password?</a>
+                                    </div>
+                            </div>
+                        </div>
+        
+                    </div>
+        
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+

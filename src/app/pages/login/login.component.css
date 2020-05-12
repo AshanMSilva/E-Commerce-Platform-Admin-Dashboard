@@ -1,0 +1,35 @@
+.banner{
+    background-image: url('../../../assets/images/background.jpg');
+    height: 500px;
+}
+.page-title{
+    text-align: right;
+    padding-top: 300px;
+    font-size: 60px;
+}
+.form-error{
+    color: red;
+    font-size: smaller;
+}
+.login-btn{
+    border-color: rgb(30, 4, 65);
+    color:  rgb(30, 4, 65);
+    background-color:rgb(213, 188, 245) ;
+}
+.login-btn:hover{
+    background-color:rgb(63, 9, 134);
+    color:  rgb(213, 188, 245);
+}
+.form-label{
+    color: rgb(30, 4, 65) ;
+}
+.form-muted-link{
+    text-align: right;
+}
+.form-link{
+    cursor: pointer;
+}
+.login-container{
+    margin-top: 180px;
+    margin-bottom: 100px;
+}

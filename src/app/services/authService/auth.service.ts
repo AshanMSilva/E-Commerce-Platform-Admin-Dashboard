@@ -27,7 +27,7 @@ export class AuthService {
 
   tokenKey = 'JWT';
   isAuthenticated: Boolean = false;
-  username: Subject<string> = new Subject<string>();
+  email: Subject<string> = new Subject<string>();
   authToken: string = undefined;
 
    constructor(private http: HttpClient,
@@ -38,7 +38,7 @@ export class AuthService {
      this.http.get<JWTResponse>(baseURL + 'users/checkJWTtoken')
      .subscribe(res => {
        console.log('JWT Token Valid: ', res);
-       this.sendUsername(res.user.username);
+       this.sendEmail(res.user.email);
      },
      err => {
        console.log('JWT Token invalid: ', err);
@@ -46,18 +46,18 @@ export class AuthService {
      });
    }
 
-   sendUsername(name: string) {
-     this.username.next(name);
+   sendEmail(email: string) {
+     this.email.next(email);
    }
 
-   clearUsername() {
-     this.username.next(undefined);
+   clearEmail() {
+     this.email.next(undefined);
    }
 
    loadUserCredentials() {
      const credentials = JSON.parse(localStorage.getItem(this.tokenKey));
      console.log('loadUserCredentials ', credentials);
-     if (credentials && credentials.username !== undefined) {
+     if (credentials && credentials.email !== undefined) {
        this.useCredentials(credentials);
        if (this.authToken) {
         this.checkJWTtoken();
@@ -66,20 +66,20 @@ export class AuthService {
    }
 
    storeUserCredentials(credentials: any) {
-     console.log('storeUserCredentials ', credentials);
+    //  console.log('storeUserCredentials ', credentials);
      localStorage.setItem(this.tokenKey, JSON.stringify(credentials));
      this.useCredentials(credentials);
    }
 
    useCredentials(credentials: any) {
      this.isAuthenticated = true;
-     this.sendUsername(credentials.username);
+     this.sendEmail(credentials.email);
      this.authToken = credentials.token;
    }
 
    destroyUserCredentials() {
      this.authToken = undefined;
-     this.clearUsername();
+     this.clearEmail();
      this.isAuthenticated = false;
      localStorage.removeItem(this.tokenKey);
    }
@@ -89,11 +89,11 @@ export class AuthService {
    }
 
    logIn(user: any): Observable<any> {
-     return this.http.post<AuthResponse>(baseURL + 'users/login',
-       {'username': user.username, 'password': user.password})
+     return this.http.post<AuthResponse>(baseURL + 'admin/login',
+       {'email': user.email, 'password': user.password})
        .pipe( map(res => {
-           this.storeUserCredentials({username: user.username, token: res.token});
-           return {'success': true, 'username': user.username };
+           this.storeUserCredentials({email: user.email, token: res.token});
+           return {'success': true, 'username': user.email };
        }),
         catchError(error => this.processHTTPMsgService.handleError(error)));
    }
@@ -106,8 +106,8 @@ export class AuthService {
      return this.isAuthenticated;
    }
 
-   getUsername(): Observable<string> {
-     return this.username.asObservable();
+   getEmail(): Observable<string> {
+     return this.email.asObservable();
    }
 
    getToken(): string {

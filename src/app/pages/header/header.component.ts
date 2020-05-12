@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/authService/auth.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   isMenuCollapsed = true;
-  constructor() { }
+  isLoggedIn: Boolean;
+  subscription: Subscription;
+  email: String;
 
-  ngOnInit(): void {
+  
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+    
+   }
+  
+
+   ngOnInit() {
+    this.authService.loadUserCredentials();
+    this.subscription = this.authService.getEmail()
+      .subscribe(email => {
+        if(email != null){
+          this.isLoggedIn = true;
+        }
+        console.log(this.isLoggedIn);
+        
+      
+      });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  logOut(){
+    this.authService.logOut();
+    this.isLoggedIn = this.authService.isLoggedIn();
+    console.log(this.isLoggedIn);
+    this.router.navigate(['login']);
   }
 
 }

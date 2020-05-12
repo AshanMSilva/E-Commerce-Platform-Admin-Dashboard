@@ -5,6 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UploadService } from 'src/app/services/uploadService/upload.service';
 import { CategoryService } from 'src/app/services/categoryService/category.service';
 import { Category } from 'src/app/shared/category';
+import { AuthService } from 'src/app/services/authService/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -39,6 +41,8 @@ export class CategoriesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private uploadService: UploadService,
     private categoryService: CategoryService,
+    private authService: AuthService,
+    private router: Router,
     @Inject('BaseURL') private BaseURL
   ) { }
   
@@ -112,6 +116,9 @@ export class CategoriesComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if(this.authService.isLoggedIn() === false){
+      this.router.navigate(['login']);
+    }
 
     this.createCategoryForm();
 

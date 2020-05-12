@@ -18,9 +18,13 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 import { UsersComponent } from './pages/users/users.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { UploadService } from './services/uploadService/upload.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CategoryService } from './services/categoryService/category.service';
 import { baseURL } from './shared/baseurl';
+import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
+import { ProcessHttpmsgService } from './services/processHttpmsgService/process-httpmsg.service';
+import { AuthService } from './services/authService/auth.service';
+import { AuthGuardService } from './services/authGuradService/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -49,6 +53,19 @@ import { baseURL } from './shared/baseurl';
   providers: [
     UploadService,
     CategoryService,
+    ProcessHttpmsgService,
+    AuthService,
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true
+    },
     {provide: 'BaseURL', useValue:baseURL}
   ],
   bootstrap: [AppComponent]

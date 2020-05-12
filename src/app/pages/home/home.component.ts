@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as CanvasJS from '../../../assets/canvasjs.min'
+import { AuthService } from 'src/app/services/authService/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -7,9 +9,15 @@ import * as CanvasJS from '../../../assets/canvasjs.min'
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    if(this.authService.isLoggedIn() === false){
+      this.router.navigate(['login']);
+    }
     let salesChart = new CanvasJS.Chart("sales", {
       animationEnabled: true,
       exportEnabled: true,

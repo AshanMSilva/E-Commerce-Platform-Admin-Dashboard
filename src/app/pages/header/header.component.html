@@ -1,17 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" id="navbar">
     <a class="navbar-brand" [routerLink]="['home']"><img src="../../../assets/images/punkalasa-icon.png" alt=""><strong class="d-none d-lg-inline"> PUNKALASA</strong></a>
-    <form class="form-inline d-lg-none">
-        <input class="form-control mr-sm-2 search-bar" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0 d-none" type="submit">Search</button>
-      </form>
   
     <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
-    <button class="navbar-toggler nav-toggler-button" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    <button *ngIf="isLoggedIn==true" class="navbar-toggler nav-toggler-button" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
       &#9776;
     </button>
   
     <!-- Step 2: Add the ngbCollapse directive to the element below. -->
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+    <div *ngIf="isLoggedIn==true" [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
       <ul class="navbar-nav">
         <li class="nav-item active">
           <!-- Step 4: Close the menu when a link is clicked. -->
@@ -40,7 +36,7 @@
         <li class="nav-item">
           <a class="nav-link nav-link-icon form-link" >
             <!-- <i class="fa fa-sign-in"></i> -->
-            <span class="nav-link-inner--text ">Sign Out</span>
+            <span class="nav-link-inner--text " (click)='logOut()'>Sign Out</span>
           </a>
         </li>
         </ul>
