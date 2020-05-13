@@ -8,4 +8,5 @@ export class Category{
     products:Product[];
     topCategory: boolean;
     sales:Number;
+    createdAt:Date;
 }

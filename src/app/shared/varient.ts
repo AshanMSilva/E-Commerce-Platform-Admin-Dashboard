@@ -1,7 +1,7 @@
 import { Attribute } from './attribute';
 
 export class Varient{
-    id: string;
+    _id: string;
     name: string;
     price: number;
     image: string;

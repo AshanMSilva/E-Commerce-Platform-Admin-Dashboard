@@ -3,7 +3,7 @@ import { Item } from './cartItem';
 import { PaymentDetails } from './paymentDetails';
 
 export class Order{
-    id: string;
+    _id: string;
     orderItems: Item[];
     cost: number;
     status: string;

@@ -14,53 +14,53 @@ export class VarientService {
 
   constructor(private http: HttpClient, private processHTTPMsgService : ProcessHttpmsgService) { }
 
-  getVarients():Observable<Varient[]>{
-    return this.http.get<Varient[]>(baseURL+'varients').pipe(catchError(this.processHTTPMsgService.handleError));
+  getVarients(productId:number):Observable<Varient[]>{
+    return this.http.get<Varient[]>(baseURL+'products/'+productId+'/varients').pipe(catchError(this.processHTTPMsgService.handleError));
     
   }
-  getVarientById(id: string): Observable<Varient>{
-    return this.http.get<Varient>(baseURL+'varients/'+id).pipe(catchError(this.processHTTPMsgService.handleError));
+  getVarientById(productId:number, id: string): Observable<Varient>{
+    return this.http.get<Varient>(baseURL+'products/'+productId+'/varients'+id).pipe(catchError(this.processHTTPMsgService.handleError));
    
   }
   
-  updateVarient(varient:Varient): Observable<Varient>{
+  updateVarient(productId: number, varientId, varient:any): Observable<Varient>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
 
-    return this.http.put<Varient>(baseURL +'varients/'+varient.id, varient, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Varient>(baseURL+'products/'+productId+'/varients'+varientId, varient, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewVarient(varient: Varient):Observable<Varient>{
+  addNewVarient(productId:number, varient: any):Observable<Varient>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
-    return this.http.post<Varient>(baseURL+ 'varients', varient, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.post<Varient>(baseURL+'products/'+productId+'/varients', varient, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewAttribute(id:number, attribute: Attribute):Observable<Varient>{
+  addNewAttribute(productId:number, id:number, attribute: any):Observable<Varient>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
-    return this.http.post<Varient>(baseURL+ 'varients/'+ id+'/attributes', attribute, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.post<Varient>(baseURL+'products/'+productId+'/varients'+ id+'/attributes', attribute, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  updateAttribute(attribute:Attribute, varientId: number, attributeId: number): Observable<Varient>{
+  updateAttribute(productId:number, attribute:any, varientId: number, attributeId: number): Observable<Varient>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
 
-    return this.http.put<Varient>(baseURL +'varients/'+varientId+'/attributes/'+attributeId,attribute, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Varient>(baseURL+'products/'+productId+'/varients'+varientId+'/attributes/'+attributeId,attribute, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  removeAttribute(varientId:number, attributeId:number):Observable<any>{
-    return this.http.delete<any>(baseURL+ 'varients/'+varientId+'/attributes/'+ attributeId).pipe(catchError(this.processHTTPMsgService.handleError));
+  removeAttribute(productId:number, varientId:number, attributeId:number):Observable<any>{
+    return this.http.delete<any>(baseURL+'products/'+productId+'/varients'+varientId+'/attributes/'+ attributeId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  deleteVarient(varientId:number):Observable<any>{
-    return this.http.delete<any>(baseURL+ 'varients/'+varientId).pipe(catchError(this.processHTTPMsgService.handleError));
+  deleteVarient(productId:number, varientId:number):Observable<any>{
+    return this.http.delete<any>(baseURL+'products/'+productId+'/varients'+varientId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }

@@ -156,6 +156,10 @@ export class CategoriesComponent implements OnInit {
       this.dataPoints = [];
       this.categories.forEach(category => {
         category.sales = this.getSalesCount(category);
+        let date = new Date(category.createdAt);
+        let month= date.getMonth();
+        console.log(month);
+        console.log(date);
         var dataPoint = {y:category.products.length, label: category.name}
         this.dataPoints.push(dataPoint);
         if(this.highestSales<= category.sales){

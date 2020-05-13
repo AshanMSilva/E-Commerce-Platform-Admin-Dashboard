@@ -1,7 +1,9 @@
 import { Varient } from './varient';
 
 export class Item{
-    varient: Varient;
+    _id:Number;
+    varient: Number;
+    product: Number;
     quantity: number;
     cost: number;
 }
