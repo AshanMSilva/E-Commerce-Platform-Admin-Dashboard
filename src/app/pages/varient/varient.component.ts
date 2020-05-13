@@ -16,6 +16,7 @@ export class VarientComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
       this.router.navigate(['login']);
     }

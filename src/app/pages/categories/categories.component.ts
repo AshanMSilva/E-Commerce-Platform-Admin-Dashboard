@@ -118,6 +118,7 @@ export class CategoriesComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
       this.router.navigate(['login']);
     }
