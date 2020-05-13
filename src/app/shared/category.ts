@@ -7,4 +7,5 @@ export class Category{
     subCategories: Category[];
     products:Product[];
     topCategory: boolean;
+    sales:Number;
 }

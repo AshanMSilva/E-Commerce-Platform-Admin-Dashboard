@@ -17,25 +17,25 @@
           <a class="nav-link" [routerLink]="['categories']" (click)="isMenuCollapsed = true"><i class="fa fa-bars"></i> Categories</a>
         </li>
         <li class="nav-item mr-0">
-            <a class="nav-link" [routerLink]="['products']" (click)="isMenuCollapsed = true"><i class="fa fa-shopping-cart"></i> Products</a>
+            <a class="nav-link" [routerLink]="['products']" (click)="isMenuCollapsed = true"><i class="fa fa-suitcase"></i> Products</a>
         </li>
         <li class="nav-item mr-0">
-          <a class="nav-link" [routerLink]="['users']" (click)="isMenuCollapsed = true"><i class="fa fa-phone"></i> Users</a>
+          <a class="nav-link" [routerLink]="['users']" (click)="isMenuCollapsed = true"><i class="fa fa-users"></i> Users</a>
         </li>
         <li class="nav-item mr-0">
-          <a class="nav-link" [routerLink]="['orders']" (click)="isMenuCollapsed = true"><i class="fa fa-info"></i> Orders</a>
+          <a class="nav-link" [routerLink]="['orders']" (click)="isMenuCollapsed = true"><i class="fa fa-shopping-cart"></i> Orders</a>
         </li>
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-md-auto">
         <li class="nav-item">
           <a class="nav-link nav-link-icon form-link">
-            <i class="fa fa-sign-in"></i>
+            <i class="fa fa-user"></i>
             <span class="nav-link-inner--text" [routerLink]="['account']"> Account</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link nav-link-icon form-link" >
-            <!-- <i class="fa fa-sign-in"></i> -->
+            <i class="fa fa-sign-out"></i>
             <span class="nav-link-inner--text " (click)='logOut()'>Sign Out</span>
           </a>
         </li>

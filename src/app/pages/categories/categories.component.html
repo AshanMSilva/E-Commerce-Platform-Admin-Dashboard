@@ -8,12 +8,14 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-4">
-                <div class="card">
+                <div class="card" *ngIf="topCategory">
                     <div class="card-header">
                         <h4 class="card-title">Top Category</h4>
                     </div>
                     <div class="card-body">
-                        <img src="" alt="">
+                        <img class="top-category-image" src="{{categoryImageUrl+topCategory.image}}" alt="">
+                        <h3 class="card-title">{{topCategory.name}}</h3>
+                        <h4>{{topCategory.sales}}</h4>
                     </div>
 
                 </div>
@@ -30,30 +32,25 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">image</th>
+                <th scope="col">name</th>
+                <th scope="col">Top Category</th>
+                <th scope="cool">No. Sales</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+              <tr *ngFor="let category of categories; index as i">
+                <th scope="row">{{i+1}}</th>
+                <td><img src="{{categoryImageUrl+category.image}}" class="category-image" alt=""></td>
+                <td>{{category.name}}</td>
+                <td>{{category.topCategory}}</td>
+                <td>{{category.sales}}</td>
+                <td><a [routerLink]="['/category', category._id]">View/Update Catgory</a></td>
+                <td><a class="form-link" (click)="deleteCategory(category._id)"><i class="fa fa-trash"> Remove</i></a></td>
               </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              
             </tbody>
           </table>
     </div>

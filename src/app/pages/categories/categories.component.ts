@@ -7,6 +7,7 @@ import { CategoryService } from 'src/app/services/categoryService/category.servi
 import { Category } from 'src/app/shared/category';
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Router } from '@angular/router';
+import { baseURL } from 'src/app/shared/baseurl';
 
 
 @Component({
@@ -16,13 +17,18 @@ import { Router } from '@angular/router';
 })
 export class CategoriesComponent implements OnInit {
 
-  
+  dataPoints=[];
+  res: any;
   file:any;
   err:String;
   image;
+  categoryImageUrl:String = baseURL+'images/categories/';
   categoryName: String;
   category: Category;
+  categories:Category[];
   categoryForm:FormGroup;
+  topCategory: Category;
+  highestSales:Number=0;
   categoryFormErrors ={
     'name':'',
     'image':''
@@ -61,6 +67,25 @@ export class CategoriesComponent implements OnInit {
             let imageName = file.filename;
             this.categoryService.updateCategory(category._id, {"image":imageName}).subscribe(cat =>{
               this.category = cat;
+              this.category.sales= this.getSalesCount(this.category);
+              this.categories.push(this.category);
+              var dataPoint = {y:this.category.products.length, label: this.category.name};
+              this.dataPoints.push(dataPoint);
+              let categoryChart = new CanvasJS.Chart("categories", {
+                animationEnabled: true,
+                exportEnabled: true,
+                title: {
+                  text: "Categories"
+                },
+                data: [{
+                  type: "column",
+                  dataPoints: this.dataPoints
+                  
+                }
+              ]
+                
+              });
+              categoryChart.render();
             }, err => this.err = err)
           }
         },err => this.err = err)
@@ -123,44 +148,83 @@ export class CategoriesComponent implements OnInit {
       this.router.navigate(['login']);
     }
 
-    this.createCategoryForm();
 
-    let categoryChart = new CanvasJS.Chart("categories", {
-      animationEnabled: true,
-      exportEnabled: true,
-      title: {
-        text: "Categories"
-      },
-      data: [{
-        type: "spline",
-        dataPoints: [
-          { y: 71, label: "Mon" },
-          { y: 55, label: "Tue" },
-          { y: 50, label: "Wed" },
-          { y: 65, label: "Thu" },
-          { y: 95, label: "Fri" },
-          { y: 68, label: "Sat" },
-          { y: 28, label: "Sun" }
-        ]
+    this.createCategoryForm();
+    this.categoryService.getCategories().subscribe(categories => {
+      this.categories = categories;
+      this.highestSales = 0;
+      this.dataPoints = [];
+      this.categories.forEach(category => {
+        category.sales = this.getSalesCount(category);
+        var dataPoint = {y:category.products.length, label: category.name}
+        this.dataPoints.push(dataPoint);
+        if(this.highestSales<= category.sales){
+          this.topCategory= category;
+          this.highestSales = category.sales;
+        }
+      });
+      console.log(this.dataPoints);
+      let categoryChart = new CanvasJS.Chart("categories", {
+        animationEnabled: true,
+        exportEnabled: true,
+        title: {
+          text: "Categories"
+        },
+        data: [{
+          type: "column",
+          dataPoints: this.dataPoints
+          
+        }
+      ]
         
-      },
-      {
-        type: "spline",
-        dataPoints: [
-          { y: 23, label: "Mon" },
-          { y: 75, label: "Tue" },
-          { y: 20, label: "Wed" },
-          { y: 35, label: "Thu" },
-          { y: 68, label: "Fri" },
-          { y: 32, label: "Sat" },
-          { y: 80, label: "Sun" }
-        ]
-        
+      });
+      categoryChart.render();
+
+    }, err=> this.err =err);
+    
+    
+  }
+  deleteCategory(id: number){
+    this.categoryService.deleteCategory(id).subscribe(res =>{
+      if(res){
+        this.categoryService.getCategories().subscribe(categories=>{
+          this.categories=categories;
+          this.highestSales =0;
+          this.dataPoints = [];
+          this.categories.forEach(category => {
+            category.sales = this.getSalesCount(category);
+            var dataPoint = {y:category.products.length, label: category.name}
+            this.dataPoints.push(dataPoint);
+            if(this.highestSales<= category.sales){
+              this.topCategory= category;
+              this.highestSales = category.sales;
+            }
+          });
+          let categoryChart = new CanvasJS.Chart("categories", {
+            animationEnabled: true,
+            exportEnabled: true,
+            title: {
+              text: "Categories"
+            },
+            data: [{
+              type: "column",
+              dataPoints: this.dataPoints
+              
+            }
+          ]
+            
+          });
+          categoryChart.render();
+        }, err => this.err=err);
       }
-    ]
-      
+    },err=> this.err=err);
+  }
+  getSalesCount(category:Category){
+    let sales = 0;
+    category.products.forEach(product => {
+      sales+= product.sales;
     });
-    categoryChart.render();
+    return sales
   }
 
 }

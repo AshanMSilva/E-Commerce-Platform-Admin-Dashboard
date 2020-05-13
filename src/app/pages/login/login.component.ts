@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
     this.authService.logIn(this.user)
       .subscribe(res => {
         if (res.success) {
-          this.zone.run(() => this.router.navigate(['home']));
+          this.zone.run(() => this.router.navigate(['home', {alert: 'Succesfully logged In'}]));
         } else {
           console.log(res);
         }

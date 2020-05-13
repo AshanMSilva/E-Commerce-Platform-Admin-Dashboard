@@ -1,20 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import * as CanvasJS from '../../../assets/canvasjs.min'
 import { AuthService } from 'src/app/services/authService/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  alert: String = null;
+  hasAlert:Boolean = false;
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.alert =this.route.snapshot.paramMap.get('alert');
+      console.log(this.alert);
+      if(this.alert!= null){
+        this.hasAlert = true;
+      }
+      
+
+    
     this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
       this.router.navigate(['login']);
@@ -91,6 +102,10 @@ export class HomeComponent implements OnInit {
     salesChart.render();
     ordersChart.render();
     usersChart.render();
+  }
+  closeAlert(){
+    this.alert = null;
+    this.hasAlert = false;
   }
 
 }
