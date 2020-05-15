@@ -6,35 +6,30 @@
         
     </div>
     <div class="container">
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+      <table *ngIf="users" class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="cool">Email</th>
+            <th scope="col">No. Orders</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; index as i">
+            <th scope="row">{{i+1}}</th>
+            <td><img src="{{userImageUrl+user.image}}" class="profile-picture" alt=""></td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.orders.length}}</td>
+            <td><a [routerLink]="['/user', user._id]">View User</a></td>
+          </tr>
+          
+        </tbody>
+      </table>
     </div>
 </div>

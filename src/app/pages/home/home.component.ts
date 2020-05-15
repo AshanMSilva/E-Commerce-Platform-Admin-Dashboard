@@ -18,18 +18,19 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.authService.loadUserCredentials();
+    if(this.authService.isLoggedIn() === false){
+      alert('You should log first.!');
+      this.router.navigate(['login']);
+    }
     this.alert =this.route.snapshot.paramMap.get('alert');
-      console.log(this.alert);
       if(this.alert!= null){
-        this.hasAlert = true;
+        alert(this.alert);
       }
       
 
     
-    this.authService.loadUserCredentials();
-    if(this.authService.isLoggedIn() === false){
-      this.router.navigate(['login']);
-    }
+    
     let salesChart = new CanvasJS.Chart("sales", {
       animationEnabled: true,
       exportEnabled: true,

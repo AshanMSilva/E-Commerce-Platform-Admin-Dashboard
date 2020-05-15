@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Router } from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private zone:NgZone,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -90,10 +92,13 @@ export class LoginComponent implements OnInit {
       error => {
         console.log(error);
         this.errMsg = error;
+        alert(this.errMsg)
       });
       
     
 
   }
+
+  
 
 }

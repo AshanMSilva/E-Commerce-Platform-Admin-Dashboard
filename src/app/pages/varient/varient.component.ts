@@ -18,6 +18,7 @@ export class VarientComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
+      alert('You should log first.!');
       this.router.navigate(['login']);
     }
     let varientChart = new CanvasJS.Chart("varients", {

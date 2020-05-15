@@ -9,6 +9,7 @@ import { UploadService } from 'src/app/services/uploadService/upload.service';
 import { CategoryService } from 'src/app/services/categoryService/category.service';
 import { Product } from 'src/app/shared/product';
 import { ProductService } from 'src/app/services/productService/product.service';
+import { baseURL } from 'src/app/shared/baseurl';
 
 @Component({
   selector: 'app-product',
@@ -23,7 +24,12 @@ export class ProductComponent implements OnInit {
   productName: String;
   productBrand: String;
   product: Product;
+  productImageUrl:String = baseURL+'images/products/';
   productForm:FormGroup;
+  products: Product[];
+  highestSales:Number=0;
+  topProduct: Product;
+
   productFormErrors ={
     'name':'',
     'brand': '',
@@ -68,6 +74,7 @@ export class ProductComponent implements OnInit {
             let imageName = file.filename;
             this.productService.updateProduct(product._id, {"image":imageName}).subscribe(prod =>{
               this.product = prod;
+              this.products.push(this.product);
             }, err => this.err = err)
           }
         },err => this.err = err)
@@ -128,9 +135,22 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
+      alert('You should log first.!');
       this.router.navigate(['login']);
     }
     this.createProductForm();
+    
+    this.productService.getProducts().subscribe(products => {
+      this.products=products;
+      this.highestSales=0;
+      this.products.forEach(product => {
+        if(this.highestSales<=product.sales){
+          this.topProduct = product;
+          this.highestSales=product.sales;
+        }
+        
+      });
+    }, err =>this.err=err);
     let productChart = new CanvasJS.Chart("products", {
       animationEnabled: true,
       exportEnabled: true,
@@ -169,5 +189,24 @@ export class ProductComponent implements OnInit {
     productChart.render();
   }
 
+  deleteCategory(id: number){
+    this.productService.deleteProduct(id).subscribe(res =>{
+      if(res){
+        alert("Product is successfully deleted.!");
+        this.productService.getProducts().subscribe(products => {
+          this.highestSales=0;
+          this.products=products;
+          this.products.forEach(product => {
+            if(this.highestSales<=product.sales){
+              this.topProduct=product;
+              this.highestSales= product.sales;
+            }
+          });
+        }, err=>this.err=err);
+      }
+    },err=>{
+      alert("Something went wrong. Please try again..")
+    });
+  }
 
 }

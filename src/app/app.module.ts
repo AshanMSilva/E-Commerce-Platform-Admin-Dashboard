@@ -25,6 +25,8 @@ import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interc
 import { ProcessHttpmsgService } from './services/processHttpmsgService/process-httpmsg.service';
 import { AuthService } from './services/authService/auth.service';
 import { AuthGuardService } from './services/authGuradService/auth-guard.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { AuthGuardService } from './services/authGuradService/auth-guard.service
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [
     UploadService,

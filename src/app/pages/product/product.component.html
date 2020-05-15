@@ -8,12 +8,14 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-4">
-                <div class="card">
+                <div *ngIf="topProduct" class="card">
                     <div class="card-header">
                         <h4 class="card-title">Top Product</h4>
                     </div>
                     <div class="card-body">
-                        <img src="" alt="">
+                      <img class="top-product-image" src="{{productImageUrl+topProduct.image}}" alt="">
+                      <h3 class="card-title">{{topProduct.brand}} {{topProduct.name}}</h3>
+                      <h4>{{topProduct.sales}}</h4>
                     </div>
 
                 </div>
@@ -26,35 +28,30 @@
         <br>
         <button class="btn" (click)="open(productContent,'md')">New Product</button>
         <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Image</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Name</th>
+              <th scope="cool">No. Sales</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products; index as i">
+              <th scope="row">{{i+1}}</th>
+              <td><img src="{{productImageUrl+product.image}}" class="product-image" alt=""></td>
+              <td>{{product.brand}}</td>
+              <td>{{product.name}}</td>
+              <td>{{product.sales}}</td>
+              <td><a [routerLink]="['/product', product._id]">View/Update Product</a></td>
+              <td><a class="form-link" (click)="deleteProduct(product._id)"><i class="fa fa-trash"> Remove</i></a></td>
+            </tr>
+            
+          </tbody>
+        </table>
     </div>
 </div>
 

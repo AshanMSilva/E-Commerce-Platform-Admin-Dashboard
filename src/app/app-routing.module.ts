@@ -18,10 +18,10 @@ const routes: Routes = [
   {path: 'account', component: AccountComponent},
   {path: 'categories', component: CategoriesComponent},
   {path: 'category/:id', component: CategoryComponent},
-  {path: 'product', component: VarientComponent},
+  {path: 'product/:id', component: VarientComponent},
   {path: 'products', component: ProductComponent},
   {path: 'users', component: UsersComponent},
-  {path: 'user', component: UserComponent},
+  {path: 'user/:id', component: UserComponent},
   {path: 'orders', component: OrderComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];

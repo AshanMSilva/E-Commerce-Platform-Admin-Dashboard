@@ -7,3 +7,11 @@
     padding-top: 300px;
     font-size: 60px;
 }
+.profile-picture{
+    height: 50px;
+    width: 50px;
+}
+.form-link{
+    cursor: pointer;
+    color: red;
+}
