@@ -35,8 +35,10 @@ export class HomeComponent implements OnInit {
   userImageUrl:String = baseURL+'images/profilePictures/';
   orders:Order[];
   orderErr:String;
-  days=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  days=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  months=['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   ordersCountByDay =[];
+  salesByMonth =[];
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -111,13 +113,110 @@ export class HomeComponent implements OnInit {
         let sixthCount = 0;
         let seventh = this.getPreviousDate(sixth);
         let seventhCount = 0;
-        // console.log(first);
+
+        let monthOne =new Date(Date.now());
+        let monthOneSales= 0;
+        let monthTwo = this.getPreviousMonth(monthOne);
+        let monthTwoSales= 0;
+        let monthThree =this.getPreviousMonth(monthTwo);
+        let monthThreeSales= 0;
+        let monthFour =this.getPreviousMonth(monthThree);
+        let monthFourSales= 0;
+        let monthFive =this.getPreviousMonth(monthFour);
+        let monthFiveSales= 0;
+        let monthSix =this.getPreviousMonth(monthFive);
+        let monthSixSales= 0;
+        let monthSeven =this.getPreviousMonth(monthSix);
+        let monthSevenSales= 0;
+        let monthEight =this.getPreviousMonth(monthSeven);
+        let monthEightSales= 0;
+        let monthNine =this.getPreviousMonth(monthEight);
+        let monthNineSales= 0;
+        let monthTen =this.getPreviousMonth(monthNine);
+        let monthTenSales= 0;
+        let monthEleven =this.getPreviousMonth(monthTen);
+        let monthElevenSales= 0;
+        let monthTwelve =this.getPreviousMonth(monthEleven);
+        let monthTwelveSales= 0;
+        // console.log(this.getPreviousMonth(first));
         // console.log(second);
         // console.log(third>fourth);
         // console.log(fourth);
         // console.log(fifth);
-        // console.log(sixth);
+        // console.log(monthTwelve);
         // console.log(seventh);
+        for (let j = 0; j < this.orders.length; j++) {
+          let order = this.orders[j];
+          let orderDate = new Date(order.orderedDate);
+          if(orderDate.getMonth()<monthTwelve.getMonth() && orderDate.getFullYear()<=monthTwelve.getFullYear()){
+            break;
+          }
+          if(orderDate.getMonth()===monthOne.getMonth() && orderDate.getFullYear()=== monthOne.getFullYear()){
+            monthOneSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthTwo.getMonth() && orderDate.getFullYear()=== monthTwo.getFullYear()){
+            monthTwoSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthThree.getMonth() && orderDate.getFullYear()=== monthThree.getFullYear()){
+            monthThreeSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthFour.getMonth() && orderDate.getFullYear()=== monthFour.getFullYear()){
+            monthFourSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthFive.getMonth() && orderDate.getFullYear()=== monthFive.getFullYear()){
+            monthFiveSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthSix.getMonth() && orderDate.getFullYear()=== monthSix.getFullYear()){
+            monthSixSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthSeven.getMonth() && orderDate.getFullYear()=== monthSeven.getFullYear()){
+            monthSevenSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthEight.getMonth() && orderDate.getFullYear()=== monthEight.getFullYear()){
+            monthEightSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthNine.getMonth() && orderDate.getFullYear()=== monthNine.getFullYear()){
+            monthNineSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthTen.getMonth() && orderDate.getFullYear()=== monthTen.getFullYear()){
+            monthTenSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthEleven.getMonth() && orderDate.getFullYear()=== monthEleven.getFullYear()){
+            monthElevenSales+=order.cost;
+          }
+          if(orderDate.getMonth()===monthTwelve.getMonth() && orderDate.getFullYear()=== monthTwelve.getFullYear()){
+            monthTwelveSales+=order.cost;
+          }
+          
+        }
+        console.log(this.months[monthOne.getMonth()]+' '+monthOne.getFullYear());
+        this.salesByMonth=[
+          {y:monthTwelveSales, label:this.months[monthTwelve.getMonth()]+' '+monthTwelve.getFullYear()},
+          {y:monthElevenSales, label:this.months[monthEleven.getMonth()]+' '+monthEleven.getFullYear()},
+          {y:monthTenSales, label:this.months[monthTen.getMonth()]+' '+monthTen.getFullYear()},
+          {y:monthNineSales, label:this.months[monthNine.getMonth()]+' '+monthNine.getFullYear()},
+          {y:monthEightSales, label:this.months[monthEight.getMonth()]+' '+monthEight.getFullYear()},
+          {y:monthSevenSales, label:this.months[monthSeven.getMonth()]+' '+monthSeven.getFullYear()},
+          {y:monthSixSales, label:this.months[monthSix.getMonth()]+' '+monthSix.getFullYear()},
+          {y:monthFiveSales, label:this.months[monthFive.getMonth()]+' '+monthFive.getFullYear()},
+          {y:monthFourSales, label:this.months[monthFour.getMonth()]+' '+monthFour.getFullYear()},
+          {y:monthThreeSales, label:this.months[monthThree.getMonth()]+' '+monthThree.getFullYear()},
+          {y:monthTwoSales, label:this.months[monthTwo.getMonth()]+' '+monthTwo.getFullYear()},
+          {y:monthOneSales, label:this.months[monthOne.getMonth()]+' '+monthOne.getUTCFullYear()}
+        ];
+        let salesChart = new CanvasJS.Chart("sales", {
+          animationEnabled: true,
+          exportEnabled: true,
+          title: {
+            text: "Sales Value"
+          },
+          data: [{
+            type: "spline",
+            dataPoints: this.salesByMonth
+          }]
+        });
+        salesChart.render();
+
         for (let i = 0; i < this.orders.length; i++) {
           let order = this.orders[i];
           let orderDate = new Date(order.orderedDate);
@@ -173,49 +272,8 @@ export class HomeComponent implements OnInit {
     })
     
     
-    let salesChart = new CanvasJS.Chart("sales", {
-      animationEnabled: true,
-      exportEnabled: true,
-      title: {
-        text: "Sales Value"
-      },
-      data: [{
-        type: "spline",
-        dataPoints: [
-          { y: 71, label: "Jan" },
-          { y: 55, label: "Feb" },
-          { y: 50, label: "Mar" },
-          { y: 65, label: "Apr" },
-          { y: 95, label: "May" },
-          { y: 68, label: "Jun" },
-          { y: 28, label: "Jul" },
-          { y: 34, label: "Aug" },
-          { y: 14, label: "Sep" },
-          { y: 30, label: "Oct" },
-          { y: 22, label: "Nov" },
-          { y: 17, label: "Dec" },
-        ]
-      }]
-    });
-    let ordersChart = new CanvasJS.Chart("orders", {
-      animationEnabled: true,
-      exportEnabled: true,
-      title: {
-        text: "Orders"
-      },
-      data: [{
-        type: "column",
-        dataPoints: [
-          { y: 71, label: "Mon" },
-          { y: 55, label: "Tue" },
-          { y: 50, label: "Wed" },
-          { y: 65, label: "Thu" },
-          { y: 95, label: "Fri" },
-          { y: 68, label: "Sat" },
-          { y: 28, label: "Sun" }
-        ]
-      }]
-    });
+    
+    
     let usersChart = new CanvasJS.Chart("users", {
       animationEnabled: true,
       exportEnabled: true,
@@ -242,7 +300,7 @@ export class HomeComponent implements OnInit {
     });
 
       
-    salesChart.render();
+    
     
     usersChart.render();
   }
@@ -260,6 +318,18 @@ export class HomeComponent implements OnInit {
   getPreviousDate(date: Date){
     let d = new Date();
     return new Date(d.setDate(date.getDate()-1));
+  }
+  getPreviousMonth(date: Date){
+    let d = new Date();
+    let nm =date.getMonth()-1;
+    let year =date.getFullYear();
+    // console.log(year);
+    if(nm<0){
+      nm+=12;
+      year = year-1;
+    }
+    let z= new Date(d.setMonth(nm));
+    return new Date(z.setFullYear(year));
   }
 
 }
