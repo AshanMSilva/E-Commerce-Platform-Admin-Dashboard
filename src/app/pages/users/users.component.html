@@ -7,6 +7,7 @@
     </div>
     <div class="container">
       <h2>Admin Users</h2>
+      <button class="btn" (click)="open(adminContent,'lg')">New Admin</button>
       <table *ngIf="adminUsers" class="table table-striped">
         <thead>
           <tr>
@@ -58,3 +59,61 @@
       </table>
     </div>
 </div>
+
+
+<ng-template #adminContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title modal-header-font" id="modal-basic-title">New Admin</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="adminForm" (ngSubmit)="onAdminSubmit(); modal.dismiss()">
+      <div class="row">
+        <div class="col-12 col-md-6">  
+          <div class="form-group">
+            <label for="firstName"[ngStyle]="{'color':adminFormErrors.firstName !== '' ? 'red !important': '' }" class="form-label">First Name</label>
+            <input type="text"[ngStyle]="{'border-color':adminFormErrors.firstName !== '' ? 'red': '' }" placeholder="First Name" class="form-control" formControlName="firstName" pattern="[A-Za-z\s]{1,}" required>
+            <p class="form-error" *ngIf="adminFormErrors.firstName">{{adminFormErrors.firstName}}</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">  
+          <div class="form-group">
+            <label for="lastName"[ngStyle]="{'color':adminFormErrors.lastName !== '' ? 'red !important': '' }" class="form-label">Last Name</label>
+            <input type="text"[ngStyle]="{'border-color':adminFormErrors.lastName !== '' ? 'red': '' }" placeholder="Last Name" class="form-control" formControlName="lastName" pattern="[A-Za-z\s]{1,}" required>
+            <p class="form-error" *ngIf="adminFormErrors.lastName">{{adminFormErrors.lastName}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group">
+            <label for="email"[ngStyle]="{'color':adminFormErrors.email!== '' ? 'red !important': '' }" class="form-label">Email Address</label>
+            <input type="email"[ngStyle]="{'border-color':adminFormErrors.email !== '' ? 'red': '' }" placeholder="Email Address" class="form-control" formControlName="email" required>
+            <p class="form-error" *ngIf="adminFormErrors.email">{{adminFormErrors.email}}</p>
+          </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="password"[ngStyle]="{'color':adminFormErrors.password !== '' ? 'red !important': '' }" class="form-label">Password</label>
+            <input type="password"[ngStyle]="{'border-color':adminFormErrors.password !== '' ? 'red': '' }" placeholder="Password" class="form-control" formControlName="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$@#!%*?&]).{6,20}" required>
+            <p class="form-error" *ngIf="adminFormErrors.password">{{adminFormErrors.password}}</p>
+          </div>
+      </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="rePassword"[ngStyle]="{'color':adminFormErrors.rePassword !== '' ? 'red !important': '' }" class="form-label">Re-Password</label>
+            <input type="password"[ngStyle]="{'border-color':adminFormErrors.rePassword !== '' ? 'red': '' }" placeholder="Re-Password" class="form-control" formControlName="rePassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$@#!%*?&]).{6,20}" required>
+            <p class="form-error" *ngIf="adminFormErrors.rePassword">{{adminFormErrors.rePassword}}</p>
+          </div>
+        </div>
+      </div>
+      <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="adminForm.invalid">Add Admin</button>
+    </form>
+      
+    
+  </div>
+</ng-template>

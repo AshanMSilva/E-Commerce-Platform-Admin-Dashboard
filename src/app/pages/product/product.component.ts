@@ -37,10 +37,10 @@ export class ProductComponent implements OnInit {
   };
   productValidationMessages ={
     'name':{
-      'required': 'Category Name is required',
+      'required': 'Name is required',
     },
     'brand':{
-      'required': 'Category Name is required',
+      'required': 'Brand is required',
     },
     'image':{
       'required': 'Image is required'
