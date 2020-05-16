@@ -10,6 +10,9 @@ import { Category } from 'src/app/shared/category';
 import { Product } from 'src/app/shared/product';
 import { RegisteredCustomer } from 'src/app/shared/registeredCustomer';
 import { baseURL } from 'src/app/shared/baseurl';
+import { Order } from 'src/app/shared/order';
+import { OrderService } from 'src/app/services/orderService/order.service';
+import { Time } from '@angular/common';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -30,13 +33,18 @@ export class HomeComponent implements OnInit {
   categoryImageUrl:String = baseURL+'images/categories/';
   productImageUrl:String = baseURL+'images/products/';
   userImageUrl:String = baseURL+'images/profilePictures/';
+  orders:Order[];
+  orderErr:String;
+  days=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  ordersCountByDay =[];
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private categoryService: CategoryService,
     private productService: ProductService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private orderService: OrderService
   ) { }
 
   ngOnInit(): void {
@@ -86,6 +94,83 @@ export class HomeComponent implements OnInit {
       }
     }, err=> this.userErr=err);
 
+    this.orderService.getOrders().subscribe(orders=>{
+      if(orders){
+        this.orders = orders.reverse();
+        let first = new Date(Date.now());
+        let firstCount = 0;
+        let second = this.getPreviousDate(first);
+        let secondCount = 0;
+        let third = this.getPreviousDate(second);
+        let thirdCount = 0;
+        let fourth = this.getPreviousDate(third);
+        let fourthCount = 0;
+        let fifth = this.getPreviousDate(fourth);
+        let fifthCount = 0;
+        let sixth = this.getPreviousDate(fifth);
+        let sixthCount = 0;
+        let seventh = this.getPreviousDate(sixth);
+        let seventhCount = 0;
+        // console.log(first);
+        // console.log(second);
+        // console.log(third>fourth);
+        // console.log(fourth);
+        // console.log(fifth);
+        // console.log(sixth);
+        // console.log(seventh);
+        for (let i = 0; i < this.orders.length; i++) {
+          let order = this.orders[i];
+          let orderDate = new Date(order.orderedDate);
+          if(orderDate<seventh){
+            break;
+          }
+          if(orderDate===first){
+            firstCount+=1;
+          }
+          if(orderDate===second){
+            secondCount+=1;
+          }
+          if(orderDate===third){
+            thirdCount+=1;
+          }
+          if(orderDate===fourth){
+            fourthCount+=1;
+          }
+          if(orderDate===fifth){
+            fifthCount+=1;
+          }
+          if(orderDate===sixth){
+            sixthCount+=1;
+          }
+          if(orderDate===seventh){
+            seventhCount+=1;
+          }
+        }
+        this.ordersCountByDay=[
+          {y:seventhCount, label:this.days[seventh.getUTCDay()]},
+          {y:sixthCount, label:this.days[sixth.getUTCDay()]},
+          {y:fifthCount, label:this.days[fifth.getUTCDay()]},
+          {y:fourthCount, label:this.days[fourth.getUTCDay()]},
+          {y:thirdCount, label:this.days[third.getUTCDay()]},
+          {y:secondCount, label:this.days[second.getUTCDay()]},
+          {y:firstCount, label:this.days[first.getUTCDay()]}
+        ];
+        let ordersChart = new CanvasJS.Chart("orders", {
+          animationEnabled: true,
+          exportEnabled: true,
+          title: {
+            text: "Orders"
+          },
+          data: [{
+            type: "column",
+            dataPoints: this.ordersCountByDay
+          }]
+        });
+        ordersChart.render();
+
+      }
+
+    })
     
     
     let salesChart = new CanvasJS.Chart("sales", {
@@ -158,7 +243,7 @@ export class HomeComponent implements OnInit {
 
       
     salesChart.render();
-    ordersChart.render();
+    
     usersChart.render();
   }
   closeAlert(){
@@ -171,6 +256,10 @@ export class HomeComponent implements OnInit {
       sales+= product.sales;
     });
     return sales
+  }
+  getPreviousDate(date: Date){
+    let d = new Date();
+    return new Date(d.setDate(date.getDate()-1));
   }
 
 }
