@@ -13,4 +13,5 @@ export class RegisteredCustomer extends Customer{
     wishlist: Product[];
     cart: Item[];
     cardNumbers: string[];
+    image:string;
 }
