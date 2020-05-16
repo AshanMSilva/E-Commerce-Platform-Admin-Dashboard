@@ -6,6 +6,31 @@
         
     </div>
     <div class="container">
+      <h2>Admin Users</h2>
+      <table *ngIf="adminUsers" class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <!-- <th scope="col">Image</th> -->
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="cool">Email</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let admin of adminUsers; index as i">
+            <th scope="row">{{i+1}}</th>
+            <!-- <td><img src="{{userImageUrl+user.image}}" class="profile-picture" alt=""></td> -->
+            <td>{{admin.firstName}}</td>
+            <td>{{admin.lastName}}</td>
+            <td>{{admin.email}}</td>
+            <td><a class="form-link" (click)="deleteAdmin(admin._id)"><i class="fa fa-trash"></i> Remove Admin</a></td>
+          </tr>
+          
+        </tbody>
+      </table>
+      <h2>Users</h2>
       <table *ngIf="users" class="table table-striped">
         <thead>
           <tr>

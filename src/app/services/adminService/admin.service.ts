@@ -29,7 +29,7 @@ export class AdminService {
       })
     };
 
-    return this.http.put<Admin>(baseURL +'admin/'+admin.id, admin, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Admin>(baseURL +'admin/'+admin._id, admin, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewAdmin(admin: Admin):Observable<Admin>{
     const httpOptions ={
@@ -38,5 +38,8 @@ export class AdminService {
       })
     };
     return this.http.post<Admin>(baseURL+ 'admin', admin, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+  }
+  deleteAdmin(adminId:number):Observable<any>{
+    return this.http.delete<any>(baseURL+ 'admin/'+adminId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }
