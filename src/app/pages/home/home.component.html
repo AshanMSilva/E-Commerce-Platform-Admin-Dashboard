@@ -8,34 +8,40 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-4">
-                <div class="card">
+                <div *ngIf="topCategory" class="card">
                     <div class="card-header">
                         <h4 class="card-title">Top Category</h4>
                     </div>
                     <div class="card-body">
-                        <img src="" alt="">
+                        <img class="top-product-image" src="{{categoryImageUrl+topCategory.image}}" alt="">
+                        <h3 class="card-title">{{topCategory.name}}</h3>
+                        <h4>{{topCategory.sales}}</h4>
                     </div>
 
                 </div>
             </div>
             <div class="col-12 col-lg-4">
-                <div class="card">
+                <div  *ngIf="topProduct" class="card">
                     <div class="card-header">
                         <h4 class="card-title">Top Product</h4>
                     </div>
                     <div class="card-body">
-                        <img src="" alt="">
+                        <img class="top-product-image" src="{{productImageUrl+topProduct.image}}" alt="">
+                        <h3 class="card-title">{{topProduct.brand}} {{topProduct.name}}</h3>
+                        <h4>{{topProduct.sales}}</h4>
                     </div>
 
                 </div>
             </div>
             <div class="co-12 col-lg-4">
-                <div class="card">
+                <div  *ngIf="topUser" class="card">
                     <div class="card-header">
                         <h4 class="card-title">Top User</h4>
                     </div>
                     <div class="card-body">
-                        <img src="" alt="">
+                        <img class="top-product-image" src="{{userImageUrl+topUser.image}}" alt="">
+                        <h3 class="card-title">{{topUser.firstName}} {{topUser.lastName}}</h3>
+                        <h4>{{topUser.orders.length}}</h4>
                     </div>
 
                 </div>

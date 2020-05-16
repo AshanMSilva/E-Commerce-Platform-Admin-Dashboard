@@ -3,6 +3,13 @@ import * as CanvasJS from '../../../assets/canvasjs.min'
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+import { CategoryService } from 'src/app/services/categoryService/category.service';
+import { ProductService } from 'src/app/services/productService/product.service';
+import { CustomerService } from 'src/app/services/customerService/customer.service';
+import { Category } from 'src/app/shared/category';
+import { Product } from 'src/app/shared/product';
+import { RegisteredCustomer } from 'src/app/shared/registeredCustomer';
+import { baseURL } from 'src/app/shared/baseurl';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,10 +18,25 @@ import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 export class HomeComponent implements OnInit {
   alert: String = null;
   hasAlert:Boolean = false;
+  topCategory:Category;
+  categoryErr:String;
+  categoryHighestSales:Number=0;
+  productHighestSales:Number=0;
+  highestOrders:Number=0;
+  topProduct: Product;
+  productErr:String;
+  topUser: RegisteredCustomer;
+  userErr:String;
+  categoryImageUrl:String = baseURL+'images/categories/';
+  productImageUrl:String = baseURL+'images/products/';
+  userImageUrl:String = baseURL+'images/profilePictures/';
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private categoryService: CategoryService,
+    private productService: ProductService,
+    private customerService: CustomerService
   ) { }
 
   ngOnInit(): void {
@@ -27,7 +49,42 @@ export class HomeComponent implements OnInit {
       if(this.alert!= null){
         alert(this.alert);
       }
-      
+
+    this.categoryService.getCategories().subscribe(categories =>{
+      if(categories){
+        this.categoryHighestSales=0;
+        categories.forEach(category => {
+          category.sales = this.getSalesCount(category)
+          if(this.categoryHighestSales <= category.sales){
+            this.topCategory=category;
+            this.categoryHighestSales= category.sales;
+          }
+        });
+      }
+    }, err =>this.categoryErr=err);
+    this.productService.getProducts().subscribe(products =>{
+      if(products){
+        this.productHighestSales=0
+        products.forEach(product => {
+          if(this.productHighestSales<= product.sales){
+            this.topProduct = product;
+            this.productHighestSales=product.sales;
+          }
+        });
+      }
+    }, err =>this.productErr=err);
+
+    this.customerService.getUsers().subscribe(users =>{
+      if(users){
+        this.highestOrders =0;
+        users.forEach(user => {
+          if(this.highestOrders<=user.orders.length){
+            this.topUser=user;
+            this.highestOrders=user.orders.length;
+          }
+        });
+      }
+    }, err=> this.userErr=err);
 
     
     
@@ -107,6 +164,13 @@ export class HomeComponent implements OnInit {
   closeAlert(){
     this.alert = null;
     this.hasAlert = false;
+  }
+  getSalesCount(category:Category){
+    let sales = 0;
+    category.products.forEach(product => {
+      sales+= product.sales;
+    });
+    return sales
   }
 
 }
