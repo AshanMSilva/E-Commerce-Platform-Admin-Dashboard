@@ -189,7 +189,7 @@ export class ProductComponent implements OnInit {
     productChart.render();
   }
 
-  deleteCategory(id: number){
+  deleteProduct(id: number){
     this.productService.deleteProduct(id).subscribe(res =>{
       if(res){
         alert("Product is successfully deleted.!");

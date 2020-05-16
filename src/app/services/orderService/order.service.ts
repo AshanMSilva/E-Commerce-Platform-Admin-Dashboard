@@ -30,7 +30,7 @@ export class OrderService {
       })
     };
 
-    return this.http.put<Order>(baseURL +'orders/'+order.id, order, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Order>(baseURL +'orders/'+order._id, order, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewOrder(order: Order):Observable<Order>{
     const httpOptions ={

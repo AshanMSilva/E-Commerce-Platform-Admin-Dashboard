@@ -33,7 +33,7 @@ export class CustomerService {
       })
     };
 
-    return this.http.put<RegisteredCustomer>(baseURL +'users/'+user.id, user, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<RegisteredCustomer>(baseURL +'users/'+user._id, user, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewUser(user: RegisteredCustomer):Observable<RegisteredCustomer>{
     const httpOptions ={
