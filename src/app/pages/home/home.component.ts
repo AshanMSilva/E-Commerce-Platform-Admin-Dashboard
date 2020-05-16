@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
   months=['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   ordersCountByDay =[];
   salesByMonth =[];
+  usersByMonth=[];
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -93,7 +94,104 @@ export class HomeComponent implements OnInit {
             this.highestOrders=user.orders.length;
           }
         });
+
+        let monthOne =new Date(Date.now());
+        let monthOneUsers= 0;
+        let monthTwo = this.getPreviousMonth(monthOne);
+        let monthTwoUsers= 0;
+        let monthThree =this.getPreviousMonth(monthTwo);
+        let monthThreeUsers= 0;
+        let monthFour =this.getPreviousMonth(monthThree);
+        let monthFourUsers= 0;
+        let monthFive =this.getPreviousMonth(monthFour);
+        let monthFiveUsers= 0;
+        let monthSix =this.getPreviousMonth(monthFive);
+        let monthSixUsers= 0;
+        let monthSeven =this.getPreviousMonth(monthSix);
+        let monthSevenUsers= 0;
+        let monthEight =this.getPreviousMonth(monthSeven);
+        let monthEightUsers= 0;
+        let monthNine =this.getPreviousMonth(monthEight);
+        let monthNineUsers= 0;
+        let monthTen =this.getPreviousMonth(monthNine);
+        let monthTenUsers= 0;
+        let monthEleven =this.getPreviousMonth(monthTen);
+        let monthElevenUsers= 0;
+        let monthTwelve =this.getPreviousMonth(monthEleven);
+        let monthTwelveUsers= 0;
+        let reverseUsers = users.reverse();
+        for (let k = 0; k < reverseUsers.length; k++) {
+          let user = reverseUsers[k];
+          let registeredDate = new Date(user.createdAt);
+          if(registeredDate.getMonth()<monthTwelve.getMonth() && registeredDate.getFullYear()<=monthTwelve.getFullYear()){
+            break;
+          }
+          if(registeredDate.getMonth()===monthOne.getMonth() && registeredDate.getFullYear()=== monthOne.getFullYear()){
+            monthOneUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthTwo.getMonth() && registeredDate.getFullYear()=== monthTwo.getFullYear()){
+            monthTwoUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthThree.getMonth() && registeredDate.getFullYear()=== monthThree.getFullYear()){
+            monthThreeUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthFour.getMonth() && registeredDate.getFullYear()=== monthFour.getFullYear()){
+            monthFourUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthFive.getMonth() && registeredDate.getFullYear()=== monthFive.getFullYear()){
+            monthFiveUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthSix.getMonth() && registeredDate.getFullYear()=== monthSix.getFullYear()){
+            monthSixUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthSeven.getMonth() && registeredDate.getFullYear()=== monthSeven.getFullYear()){
+            monthSevenUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthEight.getMonth() && registeredDate.getFullYear()=== monthEight.getFullYear()){
+            monthEightUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthNine.getMonth() && registeredDate.getFullYear()=== monthNine.getFullYear()){
+            monthNineUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthTen.getMonth() && registeredDate.getFullYear()=== monthTen.getFullYear()){
+            monthTenUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthEleven.getMonth() && registeredDate.getFullYear()=== monthEleven.getFullYear()){
+            monthElevenUsers+=1;
+          }
+          if(registeredDate.getMonth()===monthTwelve.getMonth() && registeredDate.getFullYear()=== monthTwelve.getFullYear()){
+            monthTwelveUsers+=1;
+          }
+        }
+        this.usersByMonth=[
+          {y:monthTwelveUsers, label:this.months[monthTwelve.getMonth()]+' '+monthTwelve.getFullYear()},
+          {y:monthElevenUsers, label:this.months[monthEleven.getMonth()]+' '+monthEleven.getFullYear()},
+          {y:monthTenUsers, label:this.months[monthTen.getMonth()]+' '+monthTen.getFullYear()},
+          {y:monthNineUsers, label:this.months[monthNine.getMonth()]+' '+monthNine.getFullYear()},
+          {y:monthEightUsers, label:this.months[monthEight.getMonth()]+' '+monthEight.getFullYear()},
+          {y:monthSevenUsers, label:this.months[monthSeven.getMonth()]+' '+monthSeven.getFullYear()},
+          {y:monthSixUsers, label:this.months[monthSix.getMonth()]+' '+monthSix.getFullYear()},
+          {y:monthFiveUsers, label:this.months[monthFive.getMonth()]+' '+monthFive.getFullYear()},
+          {y:monthFourUsers, label:this.months[monthFour.getMonth()]+' '+monthFour.getFullYear()},
+          {y:monthThreeUsers, label:this.months[monthThree.getMonth()]+' '+monthThree.getFullYear()},
+          {y:monthTwoUsers, label:this.months[monthTwo.getMonth()]+' '+monthTwo.getFullYear()},
+          {y:monthOneUsers, label:this.months[monthOne.getMonth()]+' '+monthOne.getUTCFullYear()}
+        ];
+        let usersChart = new CanvasJS.Chart("users", {
+          animationEnabled: true,
+          exportEnabled: true,
+          title: {
+            text: "Users"
+          },
+          data: [{
+            type: "spline",
+            dataPoints: this.usersByMonth
+          }]
+        });
+        usersChart.render();
+
       }
+      
     }, err=> this.userErr=err);
 
     this.orderService.getOrders().subscribe(orders=>{
@@ -189,7 +287,7 @@ export class HomeComponent implements OnInit {
           }
           
         }
-        console.log(this.months[monthOne.getMonth()]+' '+monthOne.getFullYear());
+        // console.log(this.months[monthOne.getMonth()]+' '+monthOne.getFullYear());
         this.salesByMonth=[
           {y:monthTwelveSales, label:this.months[monthTwelve.getMonth()]+' '+monthTwelve.getFullYear()},
           {y:monthElevenSales, label:this.months[monthEleven.getMonth()]+' '+monthEleven.getFullYear()},
@@ -269,40 +367,8 @@ export class HomeComponent implements OnInit {
 
       }
 
-    })
-    
-    
-    
-    
-    let usersChart = new CanvasJS.Chart("users", {
-      animationEnabled: true,
-      exportEnabled: true,
-      title: {
-        text: "Users"
-      },
-      data: [{
-        type: "spline",
-        dataPoints: [
-          { y: 71, label: "Jan" },
-          { y: 55, label: "Feb" },
-          { y: 50, label: "Mar" },
-          { y: 65, label: "Apr" },
-          { y: 95, label: "May" },
-          { y: 68, label: "Jun" },
-          { y: 28, label: "Jul" },
-          { y: 34, label: "Aug" },
-          { y: 14, label: "Sep" },
-          { y: 30, label: "Oct" },
-          { y: 22, label: "Nov" },
-          { y: 17, label: "Dec" }
-        ]
-      }]
     });
-
-      
     
-    
-    usersChart.render();
   }
   closeAlert(){
     this.alert = null;
