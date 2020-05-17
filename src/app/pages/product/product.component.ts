@@ -10,6 +10,9 @@ import { CategoryService } from 'src/app/services/categoryService/category.servi
 import { Product } from 'src/app/shared/product';
 import { ProductService } from 'src/app/services/productService/product.service';
 import { baseURL } from 'src/app/shared/baseurl';
+import { OrderService } from 'src/app/services/orderService/order.service';
+import { Order } from 'src/app/shared/order';
+import { Item } from 'src/app/shared/cartItem';
 
 @Component({
   selector: 'app-product',
@@ -21,6 +24,7 @@ export class ProductComponent implements OnInit {
   file:any;
   err:String;
   image;
+  orders:Order[];
   productName: String;
   productBrand: String;
   product: Product;
@@ -29,7 +33,8 @@ export class ProductComponent implements OnInit {
   products: Product[];
   highestSales:Number=0;
   topProduct: Product;
-
+  productsCountByDay=[];
+  days=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   productFormErrors ={
     'name':'',
     'brand': '',
@@ -54,6 +59,7 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private authService: AuthService,
     private router: Router,
+    private orderService:OrderService,
     @Inject('BaseURL') private BaseURL
   ) { }
   
@@ -151,42 +157,83 @@ export class ProductComponent implements OnInit {
         
       });
     }, err =>this.err=err);
-    let productChart = new CanvasJS.Chart("products", {
-      animationEnabled: true,
-      exportEnabled: true,
-      title: {
-        text: "Products"
-      },
-      data: [{
-        type: "spline",
-        dataPoints: [
-          { y: 71, label: "Mon" },
-          { y: 55, label: "Tue" },
-          { y: 50, label: "Wed" },
-          { y: 65, label: "Thu" },
-          { y: 95, label: "Fri" },
-          { y: 68, label: "Sat" },
-          { y: 28, label: "Sun" }
+
+    this.orderService.getOrders().subscribe(orders =>{
+      if(orders){
+        this.orders = orders.reverse();
+        let first = new Date(Date.now());
+        let firstCount = 0;
+        let second = this.getPreviousDate(first);
+        let secondCount = 0;
+        let third = this.getPreviousDate(second);
+        let thirdCount = 0;
+        let fourth = this.getPreviousDate(third);
+        let fourthCount = 0;
+        let fifth = this.getPreviousDate(fourth);
+        let fifthCount = 0;
+        let sixth = this.getPreviousDate(fifth);
+        let sixthCount = 0;
+        let seventh = this.getPreviousDate(sixth);
+        let seventhCount = 0;
+        for (let i = 0; i < this.orders.length; i++) {
+          let order = this.orders[i];
+          let orderDate = new Date(order.orderedDate);
+          if(orderDate<seventh){
+            break;
+          }
+          if(orderDate===first){
+            firstCount+=this.getNumberOfproducts(order.orderItems);
+          }
+          if(orderDate===second){
+            secondCount+=this.getNumberOfproducts(order.orderItems);
+          }
+          if(orderDate===third){
+            thirdCount+=this.getNumberOfproducts(order.orderItems);
+          }
+          if(orderDate===fourth){
+            fourthCount+=this.getNumberOfproducts(order.orderItems);
+          }
+          if(orderDate===fifth){
+            fifthCount+=this.getNumberOfproducts(order.orderItems);
+          }
+          if(orderDate===sixth){
+            sixthCount+=this.getNumberOfproducts(order.orderItems);
+          }
+          if(orderDate===seventh){
+            seventhCount+=this.getNumberOfproducts(order.orderItems);
+          }
+        }
+        this.productsCountByDay=[
+          {y:seventhCount, label:this.days[seventh.getUTCDay()]},
+          {y:sixthCount, label:this.days[sixth.getUTCDay()]},
+          {y:fifthCount, label:this.days[fifth.getUTCDay()]},
+          {y:fourthCount, label:this.days[fourth.getUTCDay()]},
+          {y:thirdCount, label:this.days[third.getUTCDay()]},
+          {y:secondCount, label:this.days[second.getUTCDay()]},
+          {y:firstCount, label:this.days[first.getUTCDay()]}
+        ];
+        // console.log(first);
+        let productChart = new CanvasJS.Chart("products", {
+          animationEnabled: true,
+          exportEnabled: true,
+          title: {
+            text: "Products"
+          },
+          data: [{
+            type: "column",
+            dataPoints: this.productsCountByDay
+            
+          }
         ]
-        
-      },
-      {
-        type: "spline",
-        dataPoints: [
-          { y: 23, label: "Mon" },
-          { y: 75, label: "Tue" },
-          { y: 20, label: "Wed" },
-          { y: 35, label: "Thu" },
-          { y: 68, label: "Fri" },
-          { y: 32, label: "Sat" },
-          { y: 80, label: "Sun" }
-        ]
-        
+          
+        });
+        productChart.render();
+
+
       }
-    ]
-      
     });
-    productChart.render();
+
+    
   }
 
   deleteProduct(id: number){
@@ -207,6 +254,17 @@ export class ProductComponent implements OnInit {
     },err=>{
       alert("Something went wrong. Please try again..")
     });
+  }
+  getPreviousDate(date: Date){
+    let d = new Date();
+    return new Date(d.setDate(date.getDate()-1));
+  }
+  getNumberOfproducts(items:Item[]){
+    let count =0;
+    items.forEach(item => {
+      count+=item.quantity;
+    });
+    return count;
   }
 
 }
