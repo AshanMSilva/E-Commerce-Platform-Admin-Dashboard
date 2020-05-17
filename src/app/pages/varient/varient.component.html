@@ -8,12 +8,12 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Product</h4>
-                    </div>
+                <div *ngIf="product" class="card">
+                    
                     <div class="card-body">
-                        <img src="" alt="">
+                      <img class="product-image" src="{{productImageUrl+product.image}}" alt="">
+                      <h3>Brand: {{product.brand}}</h3>
+                      <h3>Name: {{product.name}}</h3>
                     </div>
 
                 </div>
@@ -24,35 +24,36 @@
         </div>
         <br>
         <br>
-        <table class="table table-striped">
+        <div  style="overflow-x:auto;">
+          <table *ngIf="product && product.varients.length>0" class="table table-striped">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Varient Id</th>
+                <th scope="col" *ngFor="let attribute of product.varients[0].attributes">{{attribute.name}}</th>
+                <th scope="col">Availability</th>
+                <th scope="cool">Sales</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+              <tr *ngFor="let varient of product.varients; index as i">
+                <th scope="row">{{i+1}}</th>
+                <td>{{varient._id}}</td>
+                <td *ngFor="let attr of varient.attributes">{{attr.value}} </td>
+                <td>{{varient.availability}}</td>
+                <td>{{varient.sales}}</td>
+                <td>{{varient.price}}</td>
+                <td></td>
+                <td>Remove</td>
+
               </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              
             </tbody>
           </table>
+        </div>
     </div>
 </div>
