@@ -69,7 +69,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form novalidate [formGroup]="adminForm" (ngSubmit)="onAdminSubmit(); modal.dismiss()">
+    <form novalidate [formGroup]="adminForm" (ngSubmit)="onAdminSubmit(adminContent); modal.dismiss()">
       <div class="row">
         <div class="col-12 col-md-6">  
           <div class="form-group">

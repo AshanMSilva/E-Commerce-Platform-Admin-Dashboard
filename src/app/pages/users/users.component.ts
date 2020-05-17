@@ -89,10 +89,40 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  onAdminSubmit(){
+  onAdminSubmit(adminContent){
     // console.log(typeof(this.categoryForm.value['image']));
-    this.admin = this.adminForm.value;
-    console.log(this.admin);
+    let password = this.adminForm.value['password'];
+    let rePassword = this.adminForm.value['rePassword'];
+    if(password!= rePassword){
+      alert('Both Passwords should be same..');
+      this.open(adminContent,'lg')
+    }
+    else{
+      this.admin.firstName = this.adminForm.value['firstName'];
+      this.admin.lastName = this.adminForm.value['lastName'];
+      this.admin.email = this.adminForm.value['email'];
+      this.admin.password = this.adminForm.value['password'];
+      this.adminService.addNewAdmin(this.admin).subscribe(admin => {
+        if(admin){
+          // console.log(admin);
+          this.adminUsers.push(admin);
+          this.adminForm.reset({
+            firstName:'',
+            lastName:'',
+            email:'',
+            password:'',
+            rePassword:''
+          });
+          alert('New admin added successfully..');
+        }
+        
+      }, err => {
+        
+        alert(err);
+      });
+    }
+
+    // console.log(this.admin);
     
     
     
@@ -141,5 +171,7 @@ export class UsersComponent implements OnInit {
       }
     }
   }
+
+  
 
 }

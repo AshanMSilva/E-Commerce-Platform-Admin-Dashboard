@@ -41,7 +41,7 @@ export class CustomerService {
         'Content-Type':'application/json'
       })
     };
-    return this.http.post<RegisteredCustomer>(baseURL+ 'users', user, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.post<RegisteredCustomer>(baseURL+ 'users/signup', user, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewAddress(id:number, address: Address):Observable<RegisteredCustomer>{
     const httpOptions ={

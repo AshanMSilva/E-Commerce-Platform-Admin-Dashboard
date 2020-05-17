@@ -31,13 +31,13 @@ export class AdminService {
 
     return this.http.put<Admin>(baseURL +'admin/'+admin._id, admin, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewAdmin(admin: Admin):Observable<Admin>{
+  addNewAdmin(admin: any):Observable<Admin>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
-    return this.http.post<Admin>(baseURL+ 'admin', admin, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.post<Admin>(baseURL+ 'admin/signup', admin, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   deleteAdmin(adminId:number):Observable<any>{
     return this.http.delete<any>(baseURL+ 'admin/'+adminId).pipe(catchError(this.processHTTPMsgService.handleError));
