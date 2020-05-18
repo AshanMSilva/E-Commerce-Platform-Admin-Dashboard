@@ -41,13 +41,13 @@ export class ProductService {
     };
     return this.http.post<Product>(baseURL+ 'products', product, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewVarient(productId:number, varientId:number):Observable<Product>{
+  addNewVarient(productId:number, varient:any):Observable<Product>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
-    return this.http.post<Product>(baseURL+ 'products/'+ productId+'/varients',{"id": varientId}, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.post<Product>(baseURL+ 'products/'+ productId+'/varients',varient, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   removeVarient(productId:number, varientId:number):Observable<any>{
     return this.http.delete<any>(baseURL+ 'products/'+productId+'/varients/'+ varientId).pipe(catchError(this.processHTTPMsgService.handleError));

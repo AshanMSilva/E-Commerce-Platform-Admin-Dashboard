@@ -67,7 +67,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form novalidate [formGroup]="varientForm" (ngSubmit)="onVarientSubmit(); modal.dismiss()">
+    <form novalidate [formGroup]="varientForm" (ngSubmit)="onVarientSubmit(attributes); modal.dismiss()">
       
       <div class="form-group">
         <label for="availability"[ngStyle]="{'color':varientFormErrors.availability !== '' ? 'red !important': '' }" class="form-label">Availability</label>
@@ -82,7 +82,7 @@
       <div *ngIf="product && attributes">
         <div  class="form-group" *ngFor="let at of attributes">
           <label for="{{at}}" class="form-label">{{at}}</label>
-          <input type="text" placeholder="{{at}}" class="form-control" formControlName="{{at}}" required>
+          <input type="text" placeholder="{{at}}" class="form-control" formControlName="{{at}}">
         </div>
       </div>
       

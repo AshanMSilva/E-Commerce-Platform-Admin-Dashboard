@@ -7,6 +7,9 @@ import { Product } from 'src/app/shared/product';
 import { baseURL } from 'src/app/shared/baseurl';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Attribute } from '@angular/compiler';
+import { VarientService } from 'src/app/services/varientService/varient.service';
+import { Varient } from 'src/app/shared/varient';
 
 @Component({
   selector: 'app-varient',
@@ -17,6 +20,13 @@ export class VarientComponent implements OnInit {
   product:Product;
   err:String;
   attributes=[];
+  productId:any;
+  varient:Varient;
+  varientErr:String;
+  attribute={
+    name:'',
+    value:''
+  };
   productImageUrl:String = baseURL+'images/products/';
   varientFormErrors ={
     'availability':'',
@@ -49,6 +59,7 @@ export class VarientComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
+    private varientService: VarientService
   ) { }
 
   ngOnInit(): void {
@@ -57,10 +68,11 @@ export class VarientComponent implements OnInit {
       alert('You should log first.!');
       this.router.navigate(['login']);
     }
-    let productId =this.route.snapshot.paramMap.get('id');
+    this.productId =this.route.snapshot.paramMap.get('id');
     // console.log(productId);
-    this.productService.getProductById(productId).subscribe(product =>{
+    this.productService.getProductById(this.productId).subscribe(product =>{
       this.product=product;
+      this.attributes=[];
       if(product.varients.length>0){
         product.varients[0].attributes.forEach(attr => {
           this.attributes.push(attr.name);
@@ -107,8 +119,64 @@ export class VarientComponent implements OnInit {
     varientChart.render();
   }
 
-  onVarientSubmit(){
+  onVarientSubmit(attributes:string[]){
     console.log(this.varientForm.value);
+    this.productService.getProductById(this.productId).subscribe(product =>{
+      if(product){
+        let attributesList = [];
+        if(product.varients.length>0){
+          product.varients[0].attributes.forEach(attr => {
+            attributesList.push(attr.name);
+          });
+        }
+        if(attributes.length!=attributesList.length){
+          let l = attributesList.length;
+          for (let q = l; q < attributes.length; q++) {
+            let attrBody = {
+              name:attributes[q],
+              value:""
+            }
+            product.varients.forEach(varient => {
+              this.varientService.addNewAttribute(this.productId,varient._id,attrBody).subscribe(varient => this.varient=varient, err=>this.err=err);
+            });
+            
+            
+          }
+          
+          // console.log(attributes);
+          
+
+
+        }
+        // console.log(attributes);
+        let body = {
+          availability:this.varientForm.value['availability'],
+          price:this.varientForm.value['price'],
+          attributes:[]
+        }
+        attributes.forEach(attr => {
+          let attribute ={
+            name:'',
+            value:''
+          }
+          attribute.name=attr;
+          attribute.value= this.varientForm.value[attr];
+          body.attributes.push(attribute);
+        });
+        console.log(body);
+        this.varientService.addNewVarient(this.productId, body).subscribe(product =>{
+          this.product=product;
+          this.attributes=[];
+          if(product.varients.length>0){
+            product.varients[0].attributes.forEach(attr => {
+            this.attributes.push(attr.name);
+            });
+          }
+          this.createVarientForm(this.attributes);
+        }, err => this.err=err);
+      }
+    },err =>this.err=err);
+    
     // this.categoryService.addNewCategory(this.body).subscribe(categories =>this.res = categories, err => this.err=err);
     
   }
@@ -162,11 +230,11 @@ export class VarientComponent implements OnInit {
     }
   }
 
-  addNewAttribute(attribute: String, attributes:String[]){
+  addNewAttribute(attribute: string, attributes:string[]){
     attributes.push(attribute);
     this.createVarientForm(attributes);
   }
-  createVarientForm(attributes:String[]){
+  createVarientForm(attributes:string[]){
     this.createAttributeForm();
     let group = {};
 
@@ -179,8 +247,8 @@ export class VarientComponent implements OnInit {
       this.varientForm.valueChanges.subscribe(data=>this.onValueChanged(this.varientForm));
       this.onValueChanged(this.varientForm);
   }
-  onAttributeSubmit(attributes:String[]){
-    console.log("ashan")
+  onAttributeSubmit(attributes:string[]){
+    // console.log("ashan")
     let attr = this.attributeForm.value['name'];
     this.addNewAttribute(attr, attributes);
 
