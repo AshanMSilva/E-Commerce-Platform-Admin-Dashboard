@@ -24,6 +24,7 @@
         </div>
         <br>
         <br>
+        <button class="btn" (click)="open(varientContent,'md')">New Varient</button>
         <div  style="overflow-x:auto;">
           <table *ngIf="product && product.varients.length>0" class="table table-striped">
             <thead>
@@ -57,3 +58,58 @@
         </div>
     </div>
 </div>
+
+<ng-template #varientContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title modal-header-font" id="modal-basic-title">New Varient</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="varientForm" (ngSubmit)="onVarientSubmit(); modal.dismiss()">
+      
+      <div class="form-group">
+        <label for="availability"[ngStyle]="{'color':varientFormErrors.availability !== '' ? 'red !important': '' }" class="form-label">Availability</label>
+        <input type="text"[ngStyle]="{'border-color':varientFormErrors.availability !== '' ? 'red': '' }" placeholder="Availability" class="form-control" formControlName="availability" required>
+        <p class="form-error" *ngIf="varientFormErrors.availability">{{varientFormErrors.availability}}</p>
+      </div>
+      <div class="form-group">
+        <label for="price"[ngStyle]="{'color':varientFormErrors.price !== '' ? 'red !important': '' }" class="form-label">Price</label>
+        <input type="text"[ngStyle]="{'border-color':varientFormErrors.price !== '' ? 'red': '' }" placeholder="Price" class="form-control" formControlName="price" required>
+        <p class="form-error" *ngIf="varientFormErrors.price">{{varientFormErrors.price}}</p>
+      </div>
+      <div *ngIf="product && attributes">
+        <div  class="form-group" *ngFor="let at of attributes">
+          <label for="{{at}}" class="form-label">{{at}}</label>
+          <input type="text" placeholder="{{at}}" class="form-control" formControlName="{{at}}" required>
+        </div>
+      </div>
+      
+     
+      <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="varientForm.invalid">Add Varient</button>
+    </form>
+    <h3>Add New Attribute</h3>
+    <form novalidate [formGroup]="attributeForm" (ngSubmit)="onAttributeSubmit(attributes)">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            
+            <input type="text"[ngStyle]="{'border-color':attributeFormErrors.name !== '' ? 'red': '' }" placeholder="Attribute Name" class="form-control" formControlName="name" required>
+            <p class="form-error" *ngIf="attributeFormErrors.name">{{attributeFormErrors.name}}</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="attributeForm.invalid">Add Attribute</button>
+        </div>
+
+      </div>
+      
+
+    </form>
+    
+
+      
+    
+  </div>
+</ng-template>
