@@ -6,6 +6,116 @@
         
     </div>
     <div class="container">
-        
+        <div *ngIf="category" class="row">
+            <div class="col-12 col-md-6">
+                <img class="category-image" src="{{categoryImageUrl+category.image}}" alt="">
+            </div>
+            <div class="col-12 col-md-6">
+
+            </div>
+        </div>
+        <h2>Sub Categories</h2>
+        <button class="btn" (click)="open(categoryContent,'md')">New SubCategory</button>
+        <table *ngIf="category && category.subCategories.length>0" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category Id</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Top Category</th>
+                <th scope="cool">No. Sales</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cat of category.subCategories; index as i">
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{cat._id}}</td>
+                  <td><img src="{{categoryImageUrl+cat.image}}" class="cat-image" alt=""></td>
+                  <td>{{cat.name}}</td>
+                  <td>{{cat.topCategory}}</td>
+                  <td>{{cat.sales}}</td>
+                  <td><a [routerLink]="['/category', cat._id]">View/Update Catgory</a></td>
+                  <td><a class="form-link" (click)="deleteCategory(cat._id)"><i class="fa fa-trash"> Remove</i></a></td>
+                </tr>
+                
+              </tbody>
+        </table>
+        <br>
+        <br>
+        <h2>Products</h2>
+        <button class="btn" (click)="open(productContent,'md')">New Product</button>
+        <table *ngIf="category && category.products.length>0" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product Id</th>
+                <th scope="col">Image</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Name</th>
+                <th scope="cool">No. Sales</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of category.products; index as i">
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{product._id}}</td>
+                  <td><img src="{{productImageUrl+product.image}}" class="cat-image" alt=""></td>
+                  <td>{{product.brand}}</td>
+                  <td>{{product.name}}</td>
+                  <td>{{product.sales}}</td>
+                  <td><a [routerLink]="['/product', product._id]">View/Update Product</a></td>
+                  <td><a class="form-link" (click)="deleteProduct(product._id)"><i class="fa fa-trash"> Remove</i></a></td>
+                </tr>
+                
+              </tbody>
+        </table>
     </div>
 </div>
+
+<ng-template #categoryContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">New Category</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="categoryForm" (ngSubmit)="onCategorySubmit(); modal.dismiss()">
+        <div class="form-group">
+          <label for="id"[ngStyle]="{'color':categoryFormErrors.categoryId !== '' ? 'red !important': '' }" class="form-label">Category ID</label>
+          <input type="text"[ngStyle]="{'border-color':categoryFormErrors.categoryId !== '' ? 'red': '' }" placeholder="Category ID" class="form-control" formControlName="categoryId" required>
+          <p class="form-error" *ngIf="categoryFormErrors.categoryId">{{categoryFormErrors.categoryId}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="categoryForm.invalid">Add Category</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+
+  <ng-template #productContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Add Product</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="productForm" (ngSubmit)="onProductSubmit(); modal.dismiss()">
+        <div class="form-group">
+          <label for="id"[ngStyle]="{'color':productFormErrors.productId !== '' ? 'red !important': '' }" class="form-label">Product ID</label>
+          <input type="text"[ngStyle]="{'border-color':productFormErrors.productId !== '' ? 'red': '' }" placeholder="Product ID" class="form-control" formControlName="productId" required>
+          <p class="form-error" *ngIf="productFormErrors.productId">{{productFormErrors.productid}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="productForm.invalid">Add Product</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+
