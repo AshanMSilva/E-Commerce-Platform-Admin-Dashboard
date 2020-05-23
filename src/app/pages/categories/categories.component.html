@@ -28,31 +28,35 @@
         <br>
 
         <button class="btn" (click)="open(categoryContent,'md')">New Category</button>
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">image</th>
-                <th scope="col">name</th>
-                <th scope="col">Top Category</th>
-                <th scope="cool">No. Sales</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let category of categories; index as i">
-                <th scope="row">{{i+1}}</th>
-                <td><img src="{{categoryImageUrl+category.image}}" class="category-image" alt=""></td>
-                <td>{{category.name}}</td>
-                <td>{{category.topCategory}}</td>
-                <td>{{category.sales}}</td>
-                <td><a [routerLink]="['/category', category._id]">View/Update Catgory</a></td>
-                <td><a class="form-link" (click)="deleteCategory(category._id)"><i class="fa fa-trash"> Remove</i></a></td>
-              </tr>
-              
-            </tbody>
-          </table>
+        <div  style="overflow-x:auto;">
+          <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Category ID</th>
+                  <th scope="col">image</th>
+                  <th scope="col">name</th>
+                  <th scope="col">Top Category</th>
+                  <th scope="cool">No. Sales</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let category of categories; index as i">
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{category._id}}</td>
+                  <td><img src="{{categoryImageUrl+category.image}}" class="category-image" alt=""></td>
+                  <td>{{category.name}}</td>
+                  <td>{{category.topCategory}}</td>
+                  <td>{{category.sales}}</td>
+                  <td><a [routerLink]="['/category', category._id]">View/Update Catgory</a></td>
+                  <td><a class="form-link" (click)="deleteCategory(category._id)"><i class="fa fa-trash"> Remove</i></a></td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
     </div>
 </div>
 

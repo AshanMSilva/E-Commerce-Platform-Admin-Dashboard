@@ -27,31 +27,35 @@
         <br> 
         <br>
         <button class="btn" (click)="open(productContent,'md')">New Product</button>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Image</th>
-              <th scope="col">Brand</th>
-              <th scope="col">Name</th>
-              <th scope="cool">No. Sales</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let product of products; index as i">
-              <th scope="row">{{i+1}}</th>
-              <td><img src="{{productImageUrl+product.image}}" class="product-image" alt=""></td>
-              <td>{{product.brand}}</td>
-              <td>{{product.name}}</td>
-              <td>{{product.sales}}</td>
-              <td><a [routerLink]="['/product', product._id]">View/Update Product</a></td>
-              <td><a class="form-link" (click)="deleteProduct(product._id)"><i class="fa fa-trash"> Remove</i></a></td>
-            </tr>
-            
-          </tbody>
-        </table>
+        <div  style="overflow-x:auto;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product ID</th>
+                <th scope="col">Image</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Name</th>
+                <th scope="cool">No. Sales</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products; index as i">
+                <th scope="row">{{i+1}}</th>
+                <td>{{product._id}}</td>
+                <td><img src="{{productImageUrl+product.image}}" class="product-image" alt=""></td>
+                <td>{{product.brand}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.sales}}</td>
+                <td><a [routerLink]="['/product', product._id]">View/Update Product</a></td>
+                <td><a class="form-link" (click)="deleteProduct(product._id)"><i class="fa fa-trash"> Remove</i></a></td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
     </div>
 </div>
 

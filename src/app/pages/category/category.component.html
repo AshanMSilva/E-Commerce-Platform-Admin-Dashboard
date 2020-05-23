@@ -16,64 +16,68 @@
         </div>
         <h2>Sub Categories</h2>
         <button class="btn" (click)="open(categoryContent,'md')">New SubCategory</button>
-        <table *ngIf="category && category.subCategories.length>0" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Category Id</th>
-                <th scope="col">Image</th>
-                <th scope="col">Name</th>
-                <th scope="col">Top Category</th>
-                <th scope="cool">No. Sales</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let cat of category.subCategories; index as i">
-                  <th scope="row">{{i+1}}</th>
-                  <td>{{cat._id}}</td>
-                  <td><img src="{{categoryImageUrl+cat.image}}" class="cat-image" alt=""></td>
-                  <td>{{cat.name}}</td>
-                  <td>{{cat.topCategory}}</td>
-                  <td>{{cat.sales}}</td>
-                  <td><a [routerLink]="['/category', cat._id]">View/Update Catgory</a></td>
-                  <td><a class="form-link" (click)="deleteCategory(cat._id)"><i class="fa fa-trash"> Remove</i></a></td>
+        <div  style="overflow-x:auto;">
+            <table *ngIf="category && category.subCategories.length>0" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Category Id</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Top Category</th>
+                    <th scope="cool">No. Sales</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
-                
-              </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cat of category.subCategories; index as i">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{cat._id}}</td>
+                    <td><img src="{{categoryImageUrl+cat.image}}" class="cat-image" alt=""></td>
+                    <td>{{cat.name}}</td>
+                    <td>{{cat.topCategory}}</td>
+                    <td>{{cat.sales}}</td>
+                    <td><a [routerLink]="['/category', cat._id]">View/Update Catgory</a></td>
+                    <td><a class="form-link" (click)="deleteCategory(cat._id)"><i class="fa fa-trash"> Remove</i></a></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
         <br>
         <br>
         <h2>Products</h2>
         <button class="btn" (click)="open(productContent,'md')">New Product</button>
-        <table *ngIf="category && category.products.length>0" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Product Id</th>
-                <th scope="col">Image</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Name</th>
-                <th scope="cool">No. Sales</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let product of category.products; index as i">
-                  <th scope="row">{{i+1}}</th>
-                  <td>{{product._id}}</td>
-                  <td><img src="{{productImageUrl+product.image}}" class="cat-image" alt=""></td>
-                  <td>{{product.brand}}</td>
-                  <td>{{product.name}}</td>
-                  <td>{{product.sales}}</td>
-                  <td><a [routerLink]="['/product', product._id]">View/Update Product</a></td>
-                  <td><a class="form-link" (click)="deleteProduct(product._id)"><i class="fa fa-trash"> Remove</i></a></td>
+        <div  style="overflow-x:auto;">
+            <table *ngIf="category && category.products.length>0" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product Id</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Name</th>
+                    <th scope="cool">No. Sales</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
-                
-              </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of category.products; index as i">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{product._id}}</td>
+                    <td><img src="{{productImageUrl+product.image}}" class="cat-image" alt=""></td>
+                    <td>{{product.brand}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.sales}}</td>
+                    <td><a [routerLink]="['/product', product._id]">View/Update Product</a></td>
+                    <td><a class="form-link" (click)="deleteProduct(product._id)"><i class="fa fa-trash"> Remove</i></a></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
