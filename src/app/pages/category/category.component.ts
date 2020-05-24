@@ -15,6 +15,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class CategoryComponent implements OnInit {
   categoryId:any;
   category:Category;
+  subCategoryId:number;
+  productId:number;
   err:String;
   categoryImageUrl:String = baseURL+'images/categories/';
   productImageUrl:String = baseURL+'images/products/';
@@ -23,7 +25,7 @@ export class CategoryComponent implements OnInit {
     'categoryId':''
   };
   categoryValidationMessages ={
-    'productId':{
+    'categoryId':{
       'required': 'Product Id is required',
     }
   };
@@ -52,18 +54,30 @@ export class CategoryComponent implements OnInit {
       alert('You should log first.!');
       this.router.navigate(['login']);
     }
-    this.categoryId =this.route.snapshot.paramMap.get('id');
+    // this.categoryId =this.route.snapshot.paramMap.get('id');
     this.createCategoryForm();
     this.createProductForm();
-    this.categoryService.getCategoryById(this.categoryId).subscribe(category =>{
-      this.category=category;
-      if(this.category){
-
-      }
-    }, err => this.err =err);
+    this.route.params.subscribe(params => {
+      this.categoryId = params['id'];
+      this.categoryService.getCategoryById(this.categoryId).subscribe(category =>{
+        this.category=category;
+        if(this.category){
+          this.category.subCategories.forEach(cat => {
+            cat.sales = this.getSalesCount(cat);
+          });
+        }
+      }, err => this.err =err);
+    });
+    
+    
   }
   onCategorySubmit(){
-    
+    this.subCategoryId = this.categoryForm.value['categoryId'];
+    this.categoryService.addNewSubCategory(this.categoryId, this.subCategoryId).subscribe(category =>{
+      if(category){
+        this.category =category;
+      }
+    }, err=>this.err=err);
     // this.categoryService.addNewCategory(this.body).subscribe(categories =>this.res = categories, err => this.err=err);
     
     this.categoryForm.reset({
@@ -106,8 +120,15 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  deleteCategory(id: number){
-    
+  deleteSubCategory(id: any){
+    console.log(this.categoryId);
+    this.categoryService.deleteSubCategory(this.categoryId, id).subscribe(res => {
+      if(res){
+        this.categoryService.getCategoryById(this.categoryId).subscribe(category =>{
+          this.category = category;
+        }, err => this.err =err);
+      }
+    }, err => this.err =err)
   }
   getSalesCount(category:Category){
     let sales = 0;
@@ -161,6 +182,7 @@ export class CategoryComponent implements OnInit {
   deleteProduct(id: number){
     
   }
+  
 
 
   

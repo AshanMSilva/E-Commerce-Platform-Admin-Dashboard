@@ -39,7 +39,7 @@
                     <td>{{cat.topCategory}}</td>
                     <td>{{cat.sales}}</td>
                     <td><a [routerLink]="['/category', cat._id]">View/Update Catgory</a></td>
-                    <td><a class="form-link" (click)="deleteCategory(cat._id)"><i class="fa fa-trash"> Remove</i></a></td>
+                    <td><a class="form-link" (click)="deleteSubCategory(cat._id)"><i class="fa fa-trash"> Remove</i></a></td>
                     </tr>
                     
                 </tbody>
@@ -114,7 +114,7 @@
         <div class="form-group">
           <label for="id"[ngStyle]="{'color':productFormErrors.productId !== '' ? 'red !important': '' }" class="form-label">Product ID</label>
           <input type="text"[ngStyle]="{'border-color':productFormErrors.productId !== '' ? 'red': '' }" placeholder="Product ID" class="form-control" formControlName="productId" required>
-          <p class="form-error" *ngIf="productFormErrors.productId">{{productFormErrors.productid}}</p>
+          <p class="form-error" *ngIf="productFormErrors.productId">{{productFormErrors.productId}}</p>
         </div>
         <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="productForm.invalid">Add Product</button>
       </form>

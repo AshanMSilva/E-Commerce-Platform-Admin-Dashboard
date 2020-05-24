@@ -43,7 +43,7 @@ export class CategoryService {
     };
     return this.http.post<Category>(baseURL+ 'categories',body,httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewSubCategory(categoryId:number, subcategoryId:number):Observable<Category>{
+  addNewSubCategory(categoryId:any, subcategoryId:any):Observable<Category>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
@@ -51,7 +51,7 @@ export class CategoryService {
     };
     return this.http.post<Category>(baseURL+ 'categories/'+categoryId+'/subCategories',{"id":subcategoryId}, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  deleteSubCategory(categoryId:number, subcategoryId:number):Observable<any>{
+  deleteSubCategory(categoryId:any, subcategoryId:any):Observable<any>{
     return this.http.delete<any>(baseURL+ 'categories/'+categoryId+'/subCategories/'+subcategoryId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewProduct(categoryId:number, productId:number):Observable<Category>{

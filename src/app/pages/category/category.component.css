@@ -10,3 +10,32 @@
 .category-image{
     width: 100%;
 }
+.cat-image{
+    height: 50px;
+    width: 50px;
+}
+.form-link{
+    cursor: pointer;
+    color: red;
+}
+.form-error{
+    color: red;
+    font-size: smaller;
+}
+.login-btn{
+    border-color: rgb(30, 4, 65);
+    color:  rgb(30, 4, 65);
+    background-color:rgb(213, 188, 245) ;
+}
+.login-btn:hover{
+    background-color:rgb(63, 9, 134);
+    color:  rgb(213, 188, 245);
+}
+.modal-header-font{
+    color: rgb(30, 4, 65);
+    text-align: center !important;
+
+}
+.form-label{
+    color: rgb(30, 4, 65) ;
+}
