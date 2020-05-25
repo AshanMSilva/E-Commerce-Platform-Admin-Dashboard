@@ -54,7 +54,7 @@ export class CategoryService {
   deleteSubCategory(categoryId:any, subcategoryId:any):Observable<any>{
     return this.http.delete<any>(baseURL+ 'categories/'+categoryId+'/subCategories/'+subcategoryId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  addNewProduct(categoryId:number, productId:number):Observable<Category>{
+  addNewProduct(categoryId:any, productId:any):Observable<Category>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'

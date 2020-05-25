@@ -6,6 +6,7 @@ import { Category } from 'src/app/shared/category';
 import { baseURL } from 'src/app/shared/baseurl';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProductService } from 'src/app/services/productService/product.service';
 
 @Component({
   selector: 'app-category',
@@ -45,7 +46,8 @@ export class CategoryComponent implements OnInit {
     private route:ActivatedRoute,
     private categoryService: CategoryService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -138,7 +140,12 @@ export class CategoryComponent implements OnInit {
     return sales
   }
   onProductSubmit(){
-    
+    this.productId = this.productForm.value['productId'];
+    this.categoryService.addNewProduct(this.categoryId, this.productId).subscribe(category =>{
+      if(category){
+        this.category =category;
+      }
+    }, err=>this.err=err);
     // this.categoryService.addNewCategory(this.body).subscribe(categories =>this.res = categories, err => this.err=err);
     
     this.productForm.reset({
@@ -179,7 +186,14 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  deleteProduct(id: number){
+  deleteProduct(id: any){
+    this.categoryService.deleteProduct(this.categoryId, id).subscribe(res => {
+      if(res){
+        this.categoryService.getCategoryById(this.categoryId).subscribe(category =>{
+          this.category = category;
+        }, err => this.err =err);
+      }
+    }, err => this.err =err)
     
   }
   
