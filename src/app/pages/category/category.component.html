@@ -8,10 +8,21 @@
     <div class="container">
         <div *ngIf="category" class="row">
             <div class="col-12 col-md-6">
-                <img class="category-image" src="{{categoryImageUrl+category.image}}" alt="">
+              <div class="card">
+                <div class="card-header">
+                  <p class="text-center"><Strong class="topic">{{category.name}}</Strong> <span class="edit">(<a href="">Edit</a>)</span></p>
+                </div>
+                <div class="card-body">
+                  <img class="category-image" src="{{categoryImageUrl+category.image}}" alt="">
+                </div>
+                <div class="card-footer">
+
+                </div>
+              </div>
+                
             </div>
             <div class="col-12 col-md-6">
-
+              
             </div>
         </div>
         <h2>Sub Categories</h2>

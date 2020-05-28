@@ -5,7 +5,113 @@
         </div>
         
     </div>
-    <div class="container">
-        
+    <div *ngIf="customer" class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <img src="" alt="">
+            </div>
+            <div class="col-12 col-md-6">
+                <h2 class="text-center">{{customer.firstName}} {{customer.lastName}}</h2>
+                <p class="text-muted text-center">{{customer.email}}</p>
+            </div>
+
+        </div>
+        <h3>Orders</h3>
+        <div  style="overflow-x:auto;">
+            <table *ngIf="customer" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">OrderId</th>
+                    <th scope="col">No. Items</th>
+                    <th scope="col">Cost</th>
+                    <th scope="cool">Ordered Date</th>
+                    <th scope="col">Expired Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of customer.orders; index as i">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{order._id}}</td>
+                    <td>{{order.orderItems.length}}</td>
+                    <td>{{order.cost}}</td>
+                    <td>{{order.orderedDate}}</td>
+                    <td>{{order.expiredDate}}</td>
+                    <td>{{order.status}}</td>
+                    <!-- <td><a [routerLink]="['/user', order._id]">View Order</a></td> -->
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <h3>WishList</h3>
+        <div  style="overflow-x:auto;">
+            <table *ngIf="customer" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product Id</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Name</th>
+                    <th scope="cool">No. Sales</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of customer.wishlist; index as i">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{product._id}}</td>
+                    <td><img src="{{productImageUrl+product.image}}" class="cat-image" alt=""></td>
+                    <td>{{product.brand}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.sales}}</td>
+                    <td><a [routerLink]="['/product', product._id]">View/Update Product</a></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <h3>Addresses</h3>
+        <div  style="overflow-x:auto;">
+            <table *ngIf="customer" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">House Number</th>
+                    <th scope="col">First Street</th>
+                    <th scope="col">City</th>
+                    <th scope="cool">State</th>
+                    <th scope="col">Zip Code</th>
+                    <th scope="col">Default Address</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let address of customer.addresses; index as i">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{address.houseNumber}}</td>
+                    <td>{{address.firstStreet}}</td>
+                    <td>{{address.city}}</td>
+                    <td>{{address.state}}</td>
+                    <td>{{address.zipCode}}</td>
+                    <td>{{address.defaultAddress}}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="customer" class="row">
+            <div *ngIf="customer.contactNumbers.length>0" class="col-12 col-md-6">
+                <h3>Contact Numbers</h3>
+                <p *ngFor="let contact of customer.contactNumbers">{{contact}}</p>
+            </div>
+            <div *ngIf="customer.cardNumbers.length>0" class="col-12 col-md-6">
+                <h3>Card Numbers</h3>
+                <p *ngFor="let card of customer.cardNumbers">{{card}}</p>
+            </div>
+        </div>
     </div>
 </div>

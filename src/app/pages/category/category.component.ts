@@ -7,6 +7,7 @@ import { baseURL } from 'src/app/shared/baseurl';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductService } from 'src/app/services/productService/product.service';
+import * as CanvasJS from '../../../assets/canvasjs.min';
 
 @Component({
   selector: 'app-category',
@@ -19,6 +20,8 @@ export class CategoryComponent implements OnInit {
   subCategoryId:number;
   productId:number;
   err:String;
+  subCategoryDataPoints=[];
+  productDataPoints=[];
   categoryImageUrl:String = baseURL+'images/categories/';
   productImageUrl:String = baseURL+'images/products/';
   categoryForm: FormGroup;
@@ -66,10 +69,48 @@ export class CategoryComponent implements OnInit {
         if(this.category){
           this.category.subCategories.forEach(cat => {
             cat.sales = this.getSalesCount(cat);
+            var dataPoint = {y:cat.sales, label: cat.name};
+            this.subCategoryDataPoints.push(dataPoint);
+          });
+          this.category.products.forEach(product =>{
+            var productPoint = {y:product.sales, label: product.name};
+            this.productDataPoints.push(productPoint);
           });
         }
+        console.log(this.subCategoryDataPoints);
+        
       }, err => this.err =err);
     });
+    // let subCategoryChart = new CanvasJS.Chart("subCategories", {
+    //   animationEnabled: true,
+    //   exportEnabled: true,
+    //   title: {
+    //     text: "SubCategories"
+    //   },
+    //   data: [{
+    //     type: "column",
+    //     dataPoints: this.subCategoryDataPoints
+        
+    //   }
+    // ]
+      
+    // });
+    // subCategoryChart.render();
+    // let productChart = new CanvasJS.Chart("productChart", {
+    //   animationEnabled: true,
+    //   exportEnabled: true,
+    //   title: {
+    //     text: "Products"
+    //   },
+    //   data: [{
+    //     type: "column",
+    //     dataPoints: this.productDataPoints
+        
+    //   }
+    // ]
+      
+    // });
+    // productChart.render();
     
     
   }

@@ -24,6 +24,8 @@ export class UsersComponent implements OnInit {
   users:RegisteredCustomer[];
   adminUsers:Admin[];
   usersErr:String;
+  emailErr:String;
+  adminEmail:String;
   adminsErr:String;
   adminForm: FormGroup;
   userImageUrl:String = baseURL+'images/profilePictures/';
@@ -71,6 +73,7 @@ export class UsersComponent implements OnInit {
       alert('You should log first.!');
       this.router.navigate(['login']);
     }
+    this.authService.getEmail().subscribe(email =>this.adminEmail=email, err => this.emailErr=err);
     this.createAdminForm();
     this.customerService.getUsers().subscribe(users => this.users=users, err=> this.usersErr=err);
     this.adminService.getAdmins().subscribe(admins => this.adminUsers=admins, err => this.adminsErr=err);

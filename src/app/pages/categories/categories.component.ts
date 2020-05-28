@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import * as CanvasJS from '../../../assets/canvasjs.min'
+import * as CanvasJS from '../../../assets/canvasjs.min';
 import{FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UploadService } from 'src/app/services/uploadService/upload.service';
