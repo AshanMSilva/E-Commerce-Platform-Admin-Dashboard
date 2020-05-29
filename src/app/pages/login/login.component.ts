@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  ngOnInit(): void {
-    this.authService.loadUserCredentials();
+  async ngOnInit(): Promise<void> {
+    await this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === true){
       this.router.navigate(['home']);
     }

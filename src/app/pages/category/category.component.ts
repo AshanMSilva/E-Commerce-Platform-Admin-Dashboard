@@ -8,6 +8,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductService } from 'src/app/services/productService/product.service';
 import * as CanvasJS from '../../../assets/canvasjs.min';
+import { UploadService } from 'src/app/services/uploadService/upload.service';
 
 @Component({
   selector: 'app-category',
@@ -20,17 +21,29 @@ export class CategoryComponent implements OnInit {
   subCategoryId:number;
   productId:number;
   err:String;
+  image;
   subCategoryDataPoints=[];
   productDataPoints=[];
   categoryImageUrl:String = baseURL+'images/categories/';
   productImageUrl:String = baseURL+'images/products/';
   categoryForm: FormGroup;
+  changeNameForm: FormGroup;
+  changePhotoForm: FormGroup;
+  uploadErr:String;
   categoryFormErrors ={
     'categoryId':''
   };
   categoryValidationMessages ={
     'categoryId':{
       'required': 'Product Id is required',
+    }
+  };
+  changeNameFormErrors ={
+    'name':''
+  };
+  changeNameValidationMessages ={
+    'name':{
+      'required': 'Category Name is required',
     }
   };
   productForm: FormGroup;
@@ -42,6 +55,14 @@ export class CategoryComponent implements OnInit {
       'required': 'Product Id is required',
     }
   };
+  changePhotoFormErrors ={
+    'image':''
+  };
+  changePhotoValidationMessages ={
+    'image':{
+      'required': 'Category Photo is required',
+    }
+  };
 
   constructor(
     private authService: AuthService,
@@ -50,11 +71,12 @@ export class CategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private productService: ProductService
+    private productService: ProductService,
+    private uploadService: UploadService
   ) { }
 
-  ngOnInit(): void {
-    this.authService.loadUserCredentials();
+  async ngOnInit(): Promise<void> {
+    await this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
       alert('You should log first.!');
       this.router.navigate(['login']);
@@ -62,6 +84,8 @@ export class CategoryComponent implements OnInit {
     // this.categoryId =this.route.snapshot.paramMap.get('id');
     this.createCategoryForm();
     this.createProductForm();
+    this.createChangeNameForm();
+    this.createChangePhotoForm();
     this.route.params.subscribe(params => {
       this.categoryId = params['id'];
       this.categoryService.getCategoryById(this.categoryId).subscribe(category =>{
@@ -237,7 +261,132 @@ export class CategoryComponent implements OnInit {
     }, err => this.err =err)
     
   }
-  
+
+  createChangeNameForm(){
+    this.changeNameForm =this.formBuilder.group({
+      name:['',[Validators.required]]
+      
+    });
+    this.changeNameForm.valueChanges.subscribe(data=>this.onChangeNameValueChanged());
+    this.onChangeNameValueChanged(); //reset form validation messages
+  }
+
+  onChangeNameValueChanged(){
+    if(!this.changeNameForm){
+      return;
+    }
+    const form =this.changeNameForm;
+    for(const field in this.changeNameFormErrors){
+      if(this.changeNameFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changeNameFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changeNameValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changeNameFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  onChangenameSubmit(){
+    let name = this.changeNameForm.value['name'];
+    let body = {
+      "name": name
+    };
+    this.categoryService.updateCategory(this.categoryId, body).subscribe(category =>{
+      if(category){
+        alert('Category Name Updated successfully. Please refresh the page.');
+      }
+    }, err=>{
+      if(err){
+        alert(err);
+      }
+    })
+
+  }
+  createChangePhotoForm(){
+    this.changePhotoForm =this.formBuilder.group({
+      image:['',[Validators.required]]
+      
+    });
+    this.changePhotoForm.valueChanges.subscribe(data=>this.onChangePhotoValueChanged());
+    this.onChangePhotoValueChanged(); //reset form validation messages
+  }
+
+  onChangePhotoValueChanged(){
+    if(!this.changePhotoForm){
+      return;
+    }
+    const form =this.changePhotoForm;
+    for(const field in this.changePhotoFormErrors){
+      if(this.changePhotoFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changePhotoFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changePhotoValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changePhotoFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
+  }
+  onChangePhotoSubmit(){
+    const formData = new FormData();
+    formData.append('imageFile', this.image);
+    this.uploadService.uploadCategoryImage(this.categoryId, formData).subscribe(file =>{
+      if(file){
+        // this.categoryService.getCategoryById(this.categoryId).subscribe(category => this.category=category, err => this.err=err);
+        alert('Category Photo Updated Successfully..!\nPlease refresh the page.');
+        
+      }
+    },err =>{
+      this.uploadErr=err;
+      alert(this.uploadErr);
+    });
+
+  }
+  changeTopCatgeory(current: Boolean){
+    if(current===true){
+      this.categoryService.updateCategory(this.categoryId, {"topCategory": false}).subscribe(category=>{
+        if(category){
+          alert('Top Category changed successfully.. Please refresh the page');
+        }
+      }, err=>{
+        if(err){
+          alert(err.messsage);
+        }
+      })
+    }
+    else if(current===false){
+      this.categoryService.updateCategory(this.categoryId, {"topCategory": true}).subscribe(category=>{
+        if(category){
+          alert('Top Category changed successfully.. Please refresh the page');
+        }
+      }, err=>{
+        if(err){
+          alert(err.messsage);
+        }
+      })
+    }
+    else{
+      alert('Something went wrong. Please try again later.');
+    }
+  }
 
 
   

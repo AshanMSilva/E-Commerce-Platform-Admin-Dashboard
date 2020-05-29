@@ -45,3 +45,7 @@
 .edit{
     font-size:small;
 }
+.form-link-edit{
+    cursor: pointer;
+    color: blue;
+}

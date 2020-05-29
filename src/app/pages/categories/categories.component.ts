@@ -18,6 +18,7 @@ import { baseURL } from 'src/app/shared/baseurl';
 export class CategoriesComponent implements OnInit {
 
   dataPoints=[];
+  subDataPoints=[];
   res: any;
   file:any;
   err:String;
@@ -70,6 +71,8 @@ export class CategoriesComponent implements OnInit {
               this.category.sales= this.getSalesCount(this.category);
               this.categories.push(this.category);
               var dataPoint = {y:this.category.products.length, label: this.category.name};
+              var subDataPoint = {y:this.category.subCategories.length, label: this.category.name};
+              this.subDataPoints.push(subDataPoint);
               this.dataPoints.push(dataPoint);
               let categoryChart = new CanvasJS.Chart("categories", {
                 animationEnabled: true,
@@ -80,6 +83,11 @@ export class CategoriesComponent implements OnInit {
                 data: [{
                   type: "column",
                   dataPoints: this.dataPoints
+                  
+                },
+                {
+                  type: "column",
+                  dataPoints: this.subDataPoints
                   
                 }
               ]
@@ -142,8 +150,8 @@ export class CategoriesComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-    this.authService.loadUserCredentials();
+  async ngOnInit(): Promise<void> {
+    await this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
       alert('You should log first.!');
       this.router.navigate(['login']);
@@ -161,7 +169,9 @@ export class CategoriesComponent implements OnInit {
         let month= date.getMonth();
         console.log(month);
         console.log(date);
-        var dataPoint = {y:category.products.length, label: category.name}
+        var dataPoint = {y:category.products.length, label: category.name};
+        var subDataPoint = {y:category.subCategories.length, label: category.name};
+        this.subDataPoints.push(subDataPoint);
         this.dataPoints.push(dataPoint);
         if(this.highestSales<= category.sales){
           this.topCategory= category;
@@ -178,6 +188,11 @@ export class CategoriesComponent implements OnInit {
         data: [{
           type: "column",
           dataPoints: this.dataPoints
+          
+        },
+        {
+          type: "column",
+          dataPoints: this.subDataPoints
           
         }
       ]
@@ -198,7 +213,9 @@ export class CategoriesComponent implements OnInit {
           this.dataPoints = [];
           this.categories.forEach(category => {
             category.sales = this.getSalesCount(category);
-            var dataPoint = {y:category.products.length, label: category.name}
+            var dataPoint = {y:category.products.length, label: category.name};
+            var subDataPoint = {y:category.subCategories.length, label: category.name};
+            this.subDataPoints.push(subDataPoint);
             this.dataPoints.push(dataPoint);
             if(this.highestSales<= category.sales){
               this.topCategory= category;
@@ -214,6 +231,11 @@ export class CategoriesComponent implements OnInit {
             data: [{
               type: "column",
               dataPoints: this.dataPoints
+              
+            },
+            {
+              type: "column",
+              dataPoints: this.subDataPoints
               
             }
           ]

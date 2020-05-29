@@ -23,8 +23,8 @@ export class HeaderComponent implements OnInit {
    }
   
 
-   ngOnInit() {
-    this.authService.loadUserCredentials();
+   async ngOnInit() {
+    await this.authService.loadUserCredentials();
     this.subscription = this.authService.getEmail()
       .subscribe(email => {
         if(email != null){

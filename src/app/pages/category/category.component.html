@@ -10,14 +10,16 @@
             <div class="col-12 col-md-6">
               <div class="card">
                 <div class="card-header">
-                  <p class="text-center"><Strong class="topic">{{category.name}}</Strong> <span class="edit">(<a href="">Edit</a>)</span></p>
+                  <p class="text-center"><Strong class="topic">{{category.name}}</Strong> <span class="edit"> (<a class="form-link-edit" (click)="open(nameUpdateContent,'sm')">Edit</a>)</span></p>
+                  <br>
+                  <p><strong>Top Category: {{category.topCategory}}</strong><span class="edit"> (<a class="form-link-edit" (click)="changeTopCatgeory(category.topCategory)">Change</a>)</span></p>
+                  
                 </div>
                 <div class="card-body">
                   <img class="category-image" src="{{categoryImageUrl+category.image}}" alt="">
+                  <p class="text-right"><span class="edit"> <a class="form-link-edit" (click)="open(photoUpdateContent,'sm')"><i class="fa fa-camera fa-lg"></i></a></span></p>
                 </div>
-                <div class="card-footer">
-
-                </div>
+                
               </div>
                 
             </div>
@@ -128,6 +130,47 @@
           <p class="form-error" *ngIf="productFormErrors.productId">{{productFormErrors.productId}}</p>
         </div>
         <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="productForm.invalid">Add Product</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+
+  <ng-template #nameUpdateContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Category Name</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="changeNameForm" (ngSubmit)="onChangenameSubmit(); modal.dismiss()">
+        <div class="form-group">
+          <label for="name"[ngStyle]="{'color':changeNameFormErrors.name !== '' ? 'red !important': '' }" class="form-label">Category Name</label>
+          <input type="text"[ngStyle]="{'border-color':changeNameFormErrors.name !== '' ? 'red': '' }" placeholder="Category Name" class="form-control" formControlName="name" required>
+          <p class="form-error" *ngIf="changeNameFormErrors.name">{{changeNameFormErrors.name}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changeNameForm.invalid">Update Category Name</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+  <ng-template #photoUpdateContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Category Photo</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="changePhotoForm" (ngSubmit)="onChangePhotoSubmit(); modal.dismiss()">
+        <div class="form-group">
+          <label for="image" [ngStyle]="{'color':changePhotoFormErrors.image !== '' ? 'red !important': '' }" class="form-label">Image</label>
+          <input type="file" [ngStyle]="{'border-color':changePhotoFormErrors.image !== '' ? 'red': '' }" placeholder="Image" (change)="selectImage($event)" class="form-control" formControlName="image" accept="image/*" required>
+          <p class="form-error" *ngIf="changePhotoFormErrors.image">{{changePhotoFormErrors.image}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changePhotoForm.invalid">Update Category Photo</button>
       </form>
         
       

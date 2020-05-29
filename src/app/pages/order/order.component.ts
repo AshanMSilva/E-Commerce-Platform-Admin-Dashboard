@@ -18,8 +18,8 @@ export class OrderComponent implements OnInit {
     private orderService: OrderService
   ) { }
 
-  ngOnInit(): void {
-    this.authService.loadUserCredentials();
+  async ngOnInit(): Promise<void> {
+    await this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
       alert('You should log first.!');
       this.router.navigate(['login']);

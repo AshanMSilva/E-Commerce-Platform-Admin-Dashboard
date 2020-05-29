@@ -67,8 +67,8 @@ export class UsersComponent implements OnInit {
     private modalService: NgbModal
   ) { }
 
-  ngOnInit(): void {
-    this.authService.loadUserCredentials();
+  async ngOnInit(): Promise<void> {
+    await this.authService.loadUserCredentials();
     if(this.authService.isLoggedIn() === false){
       alert('You should log first.!');
       this.router.navigate(['login']);
