@@ -61,7 +61,7 @@ export class VarientService {
   removeAttribute(productId:number, varientId:number, attributeId:number):Observable<any>{
     return this.http.delete<any>(baseURL+'products/'+productId+'/varients/'+varientId+'/attributes/'+ attributeId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  deleteVarient(productId:number, varientId:number):Observable<any>{
-    return this.http.delete<any>(baseURL+'products/'+productId+'/varients/'+varientId).pipe(catchError(this.processHTTPMsgService.handleError));
+  deleteVarient(productId:number, varientId:number):Observable<Product>{
+    return this.http.delete<Product>(baseURL+'products/'+productId+'/varients/'+varientId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }

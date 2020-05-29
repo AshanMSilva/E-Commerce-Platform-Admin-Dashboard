@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Attribute } from '@angular/compiler';
 import { VarientService } from 'src/app/services/varientService/varient.service';
 import { Varient } from 'src/app/shared/varient';
+import { UploadService } from 'src/app/services/uploadService/upload.service';
 
 @Component({
   selector: 'app-varient',
@@ -20,6 +21,7 @@ export class VarientComponent implements OnInit {
   product:Product;
   err:String;
   attributes=[];
+  image;
   productId:any;
   varient:Varient;
   varientErr:String;
@@ -27,7 +29,32 @@ export class VarientComponent implements OnInit {
     name:'',
     value:''
   };
+  uploadErr:String;
   productImageUrl:String = baseURL+'images/products/';
+  changeNameFormErrors ={
+    'name':''
+  };
+  changeNameValidationMessages ={
+    'name':{
+      'required': 'Product Name is required',
+    }
+  };
+  changeBrandFormErrors ={
+    'brand':''
+  };
+  changeBrandValidationMessages ={
+    'brand':{
+      'required': 'Product Brand is required',
+    }
+  };
+  changePhotoFormErrors ={
+    'image':''
+  };
+  changePhotoValidationMessages ={
+    'image':{
+      'required': 'Product Photo is required',
+    }
+  };
   varientFormErrors ={
     'availability':'',
     'price': ''
@@ -52,6 +79,9 @@ export class VarientComponent implements OnInit {
   };
   varientForm: FormGroup;
   attributeForm:FormGroup;
+  changeNameForm: FormGroup;
+  changePhotoForm:FormGroup;
+  changeBrandForm: FormGroup;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -59,7 +89,8 @@ export class VarientComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private varientService: VarientService
+    private varientService: VarientService,
+    private uploadService: UploadService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -79,6 +110,9 @@ export class VarientComponent implements OnInit {
         });
       }
       this.createVarientForm(this.attributes);
+      this.createChangeNameForm();
+      this.createChangePhotoForm();
+      this.createChangeBrandForm();
        //reset form validation messages
     },err=>this.err=err );
     let varientChart = new CanvasJS.Chart("varients", {
@@ -262,6 +296,166 @@ export class VarientComponent implements OnInit {
     this.onAttributeValueChanged(this.attributeForm); //reset form validation messages
 
 
+  }
+  createChangeNameForm(){
+    this.changeNameForm =this.formBuilder.group({
+      name:['',[Validators.required]]
+      
+    });
+    this.changeNameForm.valueChanges.subscribe(data=>this.onChangeNameValueChanged());
+    this.onChangeNameValueChanged(); //reset form validation messages
+  }
+
+  onChangeNameValueChanged(){
+    if(!this.changeNameForm){
+      return;
+    }
+    const form =this.changeNameForm;
+    for(const field in this.changeNameFormErrors){
+      if(this.changeNameFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changeNameFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changeNameValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changeNameFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  onChangenameSubmit(){
+    let name = this.changeNameForm.value['name'];
+    let body = {
+      "name": name
+    };
+    this.productService.updateProduct(this.productId, body).subscribe(product =>{
+      if(product){
+        alert('Product Name Updated successfully. Please refresh the page.');
+      }
+    }, err=>{
+      if(err){
+        alert(err);
+      }
+    })
+
+  }
+
+  createChangeBrandForm(){
+    this.changeBrandForm =this.formBuilder.group({
+      brand:['',[Validators.required]]
+      
+    });
+    this.changeBrandForm.valueChanges.subscribe(data=>this.onChangeBrandValueChanged());
+    this.onChangeBrandValueChanged(); //reset form validation messages
+  }
+
+  onChangeBrandValueChanged(){
+    if(!this.changeBrandForm){
+      return;
+    }
+    const form =this.changeBrandForm;
+    for(const field in this.changeBrandFormErrors){
+      if(this.changeBrandFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changeBrandFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changeBrandValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changeBrandFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  onChangeBrandSubmit(){
+    let brand = this.changeBrandForm.value['brand'];
+    let body = {
+      "brand": brand
+    };
+    this.productService.updateProduct(this.productId, body).subscribe(product =>{
+      if(product){
+        alert('Product Name Updated successfully. Please refresh the page.');
+      }
+    }, err=>{
+      if(err){
+        alert(err);
+      }
+    })
+
+  }
+  createChangePhotoForm(){
+    this.changePhotoForm =this.formBuilder.group({
+      image:['',[Validators.required]]
+      
+    });
+    this.changePhotoForm.valueChanges.subscribe(data=>this.onChangePhotoValueChanged());
+    this.onChangePhotoValueChanged(); //reset form validation messages
+  }
+
+  onChangePhotoValueChanged(){
+    if(!this.changePhotoForm){
+      return;
+    }
+    const form =this.changePhotoForm;
+    for(const field in this.changePhotoFormErrors){
+      if(this.changePhotoFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changePhotoFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changePhotoValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changePhotoFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
+  }
+  onChangePhotoSubmit(){
+    const formData = new FormData();
+    formData.append('imageFile', this.image);
+    this.uploadService.uploadProductImage(this.productId, formData).subscribe(file =>{
+      if(file){
+        // this.productService.getProductById(this.productId).subscribe(product => this.product=product, err => this.err=err);
+        alert('Product Photo Updated Successfully..!\nPlease refresh the page.');
+        
+      }
+    },err =>{
+      this.uploadErr=err;
+      alert(this.uploadErr);
+    });
+
+  }
+  removeVarient(varientId: any){
+    this.varientService.deleteVarient(this.productId, varientId).subscribe(product =>{
+      if(product){
+        this.product=product;
+        alert("Varient removed Successfully..");
+      }
+      
+    }, err=>{
+      if(err){
+        this.err=err;
+        alert('Something went wrong.Please try again..');
+      }
+    });
+    
   }
 
 }
