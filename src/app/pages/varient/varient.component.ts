@@ -21,6 +21,8 @@ export class VarientComponent implements OnInit {
   product:Product;
   err:String;
   attributes=[];
+  attributeId:any;
+  varientId:any;
   image;
   productId:any;
   varient:Varient;
@@ -45,6 +47,14 @@ export class VarientComponent implements OnInit {
   changeBrandValidationMessages ={
     'brand':{
       'required': 'Product Brand is required',
+    }
+  };
+  changeAttributeFormErrors ={
+    'attr':''
+  };
+  changeAttributeValidationMessages ={
+    'attr':{
+      'required': 'Attribute Value is required',
     }
   };
   changePhotoFormErrors ={
@@ -82,6 +92,7 @@ export class VarientComponent implements OnInit {
   changeNameForm: FormGroup;
   changePhotoForm:FormGroup;
   changeBrandForm: FormGroup;
+  changeAttributeForm: FormGroup;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -113,6 +124,7 @@ export class VarientComponent implements OnInit {
       this.createChangeNameForm();
       this.createChangePhotoForm();
       this.createChangeBrandForm();
+      this.createChangeAttributeForm();
        //reset form validation messages
     },err=>this.err=err );
     let varientChart = new CanvasJS.Chart("varients", {
@@ -457,5 +469,60 @@ export class VarientComponent implements OnInit {
     });
     
   }
+  chageAttribute(content,modalSize, attributeId, varientId){
+    this.attributeId = attributeId;
+    this.varientId= varientId;
+    this.open(content, modalSize);
+  }
+
+  createChangeAttributeForm(){
+    this.changeAttributeForm =this.formBuilder.group({
+      attr:['',[Validators.required]]
+      
+    });
+    this.changeAttributeForm.valueChanges.subscribe(data=>this.onChangeAttributeValueChanged());
+    this.onChangeBrandValueChanged(); //reset form validation messages
+  }
+
+  onChangeAttributeValueChanged(){
+    if(!this.changeAttributeForm){
+      return;
+    }
+    const form =this.changeAttributeForm;
+    for(const field in this.changeBrandFormErrors){
+      if(this.changeAttributeFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changeAttributeFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changeAttributeValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changeAttributeFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  onChangeAttributeSubmit(){
+    let val = this.changeAttributeForm.value['attr'];
+    console.log(val);
+    let body = {
+      value: val
+    };
+    console.log(body);
+    this.varientService.updateAttribute(this.productId, body, this.varientId, this.attributeId).subscribe(varient =>{
+      if(varient){
+        alert('Attribute Updated successfully. Please refresh the page.');
+      }
+    }, err=>{
+      if(err){
+        alert(err);
+      }
+    })
+
+  }
+
 
 }

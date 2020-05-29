@@ -44,10 +44,10 @@
               <tr *ngFor="let varient of product.varients; index as i">
                 <th scope="row">{{i+1}}</th>
                 <td>{{varient._id}}</td>
-                <td *ngFor="let attr of varient.attributes">{{attr.value}} </td>
-                <td>{{varient.availability}}</td>
+                <td *ngFor="let attr of varient.attributes">{{attr.value}} <a class="form-link-edit edit" (click)="chageAttribute(attributeUpdateContent, 'sm', attr._id, varient._id)"> (edit)</a></td>
+                <td>{{varient.availability}} <a href=""> (edit)</a> </td>
                 <td>{{varient.sales}}</td>
-                <td>{{varient.price}}</td>
+                <td>{{varient.price}} <a href=""> (edit)</a> </td>
                 <td><a class="form-link" (click)=removeVarient(varient._id)><i class="fa fa-trash"> Remove</i></a></td>
 
               </tr>
@@ -169,6 +169,26 @@
         <p class="form-error" *ngIf="changeBrandFormErrors.brand">{{changeBrandFormErrors.brand}}</p>
       </div>
       <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changeBrandForm.invalid">Update Product Brand</button>
+    </form>
+      
+    
+  </div>
+</ng-template>
+<ng-template #attributeUpdateContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Attribute</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="changeAttributeForm" (ngSubmit)="onChangeAttributeSubmit(); modal.dismiss()">
+      <div class="form-group">
+        <label for="attr"[ngStyle]="{'color':changeAttributeFormErrors.attr !== '' ? 'red !important': '' }" class="form-label">Attribute Value</label>
+        <input type="text"[ngStyle]="{'border-color':changeAttributeFormErrors.attr !== '' ? 'red': '' }" placeholder="Attribute Value" class="form-control" formControlName="attr" required>
+        <p class="form-error" *ngIf="changeAttributeFormErrors.attr">{{changeAttributeFormErrors.attr}}</p>
+      </div>
+      <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changeAttributeForm.invalid">Update Attribute</button>
     </form>
       
     
