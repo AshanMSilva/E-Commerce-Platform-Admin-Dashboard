@@ -45,9 +45,9 @@
                 <th scope="row">{{i+1}}</th>
                 <td>{{varient._id}}</td>
                 <td *ngFor="let attr of varient.attributes">{{attr.value}} <a class="form-link-edit edit" (click)="chageAttribute(attributeUpdateContent, 'sm', attr._id, varient._id)"> (edit)</a></td>
-                <td>{{varient.availability}} <a href=""> (edit)</a> </td>
+                <td>{{varient.availability}} <a class="form-link-edit edit" (click)="updateVarient(availabilityUpdateContent,'sm', varient._id)"> (edit)</a> </td>
                 <td>{{varient.sales}}</td>
-                <td>{{varient.price}} <a href=""> (edit)</a> </td>
+                <td>{{varient.price}} <a class="form-link-edit edit" (click)="updateVarient(priceUpdateContent,'sm', varient._id)"> (edit)</a> </td>
                 <td><a class="form-link" (click)=removeVarient(varient._id)><i class="fa fa-trash"> Remove</i></a></td>
 
               </tr>
@@ -189,6 +189,47 @@
         <p class="form-error" *ngIf="changeAttributeFormErrors.attr">{{changeAttributeFormErrors.attr}}</p>
       </div>
       <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changeAttributeForm.invalid">Update Attribute</button>
+    </form>
+      
+    
+  </div>
+</ng-template>
+
+<ng-template #availabilityUpdateContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Availability</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="changeAvailabilityForm" (ngSubmit)="onChangeAvailabilitySubmit(); modal.dismiss()">
+      <div class="form-group">
+        <label for="availability"[ngStyle]="{'color':changeAvailabilityFormErrors.availability !== '' ? 'red !important': '' }" class="form-label">Availability</label>
+        <input type="text"[ngStyle]="{'border-color':changeAvailabilityFormErrors.availability !== '' ? 'red': '' }" placeholder="Availability" class="form-control" formControlName="availability" required>
+        <p class="form-error" *ngIf="changeAvailabilityFormErrors.availability">{{changeAvailabilityFormErrors.availability}}</p>
+      </div>
+      <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changeAvailabilityForm.invalid">Update Availability</button>
+    </form>
+      
+    
+  </div>
+</ng-template>
+<ng-template #priceUpdateContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Price</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="changePriceForm" (ngSubmit)="onChangePriceSubmit(); modal.dismiss()">
+      <div class="form-group">
+        <label for="price"[ngStyle]="{'color':changePriceFormErrors.price !== '' ? 'red !important': '' }" class="form-label">Price</label>
+        <input type="text"[ngStyle]="{'border-color':changePriceFormErrors.price !== '' ? 'red': '' }" placeholder="Price" class="form-control" formControlName="price" pattern='[0-9]+(\.[0-9][0-9]?)?' required>
+        <p class="form-error" *ngIf="changePriceFormErrors.price">{{changePriceFormErrors.price}}</p>
+      </div>
+      <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changePriceForm.invalid">Update Price</button>
     </form>
       
     

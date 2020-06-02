@@ -41,6 +41,23 @@ export class VarientComponent implements OnInit {
       'required': 'Product Name is required',
     }
   };
+  changePriceFormErrors ={
+    'price':''
+  };
+  changePriceValidationMessages ={
+    'price':{
+      'required': 'Product Price is required',
+      'pattern': 'Should contain a Price'
+    }
+  };
+  changeAvailabilityFormErrors ={
+    'availability':''
+  };
+  changeAvailabilityValidationMessages ={
+    'availability':{
+      'required': 'Product Availability is required',
+    }
+  };
   changeBrandFormErrors ={
     'brand':''
   };
@@ -93,6 +110,8 @@ export class VarientComponent implements OnInit {
   changePhotoForm:FormGroup;
   changeBrandForm: FormGroup;
   changeAttributeForm: FormGroup;
+  changePriceForm: FormGroup;
+  changeAvailabilityForm: FormGroup;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -125,6 +144,8 @@ export class VarientComponent implements OnInit {
       this.createChangePhotoForm();
       this.createChangeBrandForm();
       this.createChangeAttributeForm();
+      this.createChangeAvailabilityForm();
+      this.createChangePriceForm();
        //reset form validation messages
     },err=>this.err=err );
     let varientChart = new CanvasJS.Chart("varients", {
@@ -481,7 +502,7 @@ export class VarientComponent implements OnInit {
       
     });
     this.changeAttributeForm.valueChanges.subscribe(data=>this.onChangeAttributeValueChanged());
-    this.onChangeBrandValueChanged(); //reset form validation messages
+    this.onChangeAttributeValueChanged(); //reset form validation messages
   }
 
   onChangeAttributeValueChanged(){
@@ -489,7 +510,7 @@ export class VarientComponent implements OnInit {
       return;
     }
     const form =this.changeAttributeForm;
-    for(const field in this.changeBrandFormErrors){
+    for(const field in this.changeAttributeFormErrors){
       if(this.changeAttributeFormErrors.hasOwnProperty(field)){
         //clear previous error messsage(if any)
         this.changeAttributeFormErrors[field]='';
@@ -521,6 +542,109 @@ export class VarientComponent implements OnInit {
         alert(err);
       }
     })
+
+  }
+
+  createChangeAvailabilityForm(){
+    this.changeAvailabilityForm =this.formBuilder.group({
+      availability:['',[Validators.required]]
+      
+    });
+    this.changeAvailabilityForm.valueChanges.subscribe(data=>this.onChangeAvailabilityValueChanged());
+    this.onChangeAvailabilityValueChanged(); //reset form validation messages
+  }
+
+  onChangeAvailabilityValueChanged(){
+    if(!this.changeAvailabilityForm){
+      return;
+    }
+    const form =this.changeAvailabilityForm;
+    for(const field in this.changeAvailabilityFormErrors){
+      if(this.changeAvailabilityFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changeAvailabilityFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changeAvailabilityValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changeAvailabilityFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  onChangeAvailabilitySubmit(){
+    let val = this.changeAvailabilityForm.value['availability'];
+    console.log(val);
+    let body = {
+      "availability": val
+    };
+    console.log(body);
+    this.varientService.updateVarient(this.productId, this.varientId, body).subscribe(varient =>{
+      if(varient){
+        alert('Varient Updated successfully. Please refresh the page.');
+      }
+    }, err=>{
+      if(err){
+        alert(err);
+      }
+    })
+
+  }
+
+  createChangePriceForm(){
+    this.changePriceForm =this.formBuilder.group({
+      price:['',[Validators.required, Validators.pattern]]
+      
+    });
+    this.changePriceForm.valueChanges.subscribe(data=>this.onChangePriceValueChanged());
+    this.onChangePriceValueChanged(); //reset form validation messages
+  }
+
+  onChangePriceValueChanged(){
+    if(!this.changePriceForm){
+      return;
+    }
+    const form =this.changePriceForm;
+    for(const field in this.changePriceFormErrors){
+      if(this.changePriceFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changePriceFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changePriceValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changePriceFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  onChangePriceSubmit(){
+    let val = this.changePriceForm.value['price'];
+    console.log(val);
+    let body = {
+      "price": val
+    };
+    console.log(body);
+    this.varientService.updateVarient(this.productId, this.varientId, body).subscribe(varient =>{
+      if(varient){
+        alert('Varient Updated successfully. Please refresh the page.');
+      }
+    }, err=>{
+      if(err){
+        alert(err);
+      }
+    })
+
+  }
+  updateVarient(content, modalSize, varientId){
+    this.varientId= varientId;
+    this.open(content, modalSize);
 
   }
 

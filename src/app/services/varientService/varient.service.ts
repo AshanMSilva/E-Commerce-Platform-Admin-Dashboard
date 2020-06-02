@@ -24,7 +24,7 @@ export class VarientService {
    
   }
   
-  updateVarient(productId: number, varientId, varient:any): Observable<Varient>{
+  updateVarient(productId: any, varientId: any, varient:any): Observable<Varient>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
