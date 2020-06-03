@@ -12,7 +12,7 @@ export class UploadService {
 
   constructor(private http: HttpClient, private processHTTPMsgService : ProcessHttpmsgService) { }
 
-  uploadCategoryImage(id:number, file: any):Observable<any>{
+  uploadCategoryImage(id:any, file: any):Observable<any>{
     const httpOptions ={
       
     };
@@ -24,7 +24,7 @@ export class UploadService {
     };
     return this.http.post<any>(baseURL+ 'imageUpload/product/'+id, file).pipe(catchError(this.processHTTPMsgService.handleError));
   }
-  uploadPofilePicture(id:number, file: any):Observable<any>{
+  uploadPofilePicture(id:any, file: any):Observable<any>{
     const httpOptions ={
       
     };

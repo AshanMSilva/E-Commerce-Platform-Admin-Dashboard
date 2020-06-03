@@ -30,13 +30,13 @@
         <li class="nav-item">
           <a class="nav-link nav-link-icon form-link">
             <i class="fa fa-user"></i>
-            <span class="nav-link-inner--text" [routerLink]="['account']"> Account</span>
+            <span class="nav-link-inner--text" [routerLink]="['account']" (click)="isMenuCollapsed = true"> Account</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link nav-link-icon form-link" >
             <i class="fa fa-sign-out"></i>
-            <span class="nav-link-inner--text " (click)='logOut()'>Sign Out</span>
+            <span class="nav-link-inner--text " (click)='logOut()' (click)="isMenuCollapsed = true">Sign Out</span>
           </a>
         </li>
         </ul>

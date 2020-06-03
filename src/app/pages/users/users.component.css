@@ -32,3 +32,7 @@
 .form-label{
     color: rgb(30, 4, 65) ;
 }
+.profile-picture{
+    height: 50px;
+    width: 50px;
+}

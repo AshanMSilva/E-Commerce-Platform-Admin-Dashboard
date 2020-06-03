@@ -22,14 +22,14 @@ export class AdminService {
    
   }
   
-  updateAdmin(admin:Admin): Observable<Admin>{
+  updateAdmin(adminId:any, body:any): Observable<Admin>{
     const httpOptions ={
       headers: new HttpHeaders({
         'Content-Type':'application/json'
       })
     };
 
-    return this.http.put<Admin>(baseURL +'admin/'+admin._id, admin, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+    return this.http.put<Admin>(baseURL +'admin/'+adminId, body, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
   addNewAdmin(admin: any):Observable<Admin>{
     const httpOptions ={

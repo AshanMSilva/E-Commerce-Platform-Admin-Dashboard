@@ -19,6 +19,7 @@ import { UploadService } from 'src/app/services/uploadService/upload.service';
 })
 export class VarientComponent implements OnInit {
   product:Product;
+  data=[];
   err:String;
   attributes=[];
   attributeId:any;
@@ -133,6 +134,28 @@ export class VarientComponent implements OnInit {
     // console.log(productId);
     this.productService.getProductById(this.productId).subscribe(product =>{
       this.product=product;
+      this.data=[];
+      this.product.varients.forEach(varient => {
+        let d = {y:varient.sales, label:varient._id}
+        this.data.push(d);
+      });
+      let varientChart = new CanvasJS.Chart("varients", {
+        animationEnabled: true,
+        exportEnabled: true,
+        title: {
+          text: "Varients"
+        },
+        data: [
+        {
+          type: "column",
+          dataPoints: this.data
+          
+        }
+      ]
+        
+      });
+      varientChart.render();
+      // console.log(this.data);
       this.attributes=[];
       if(product.varients.length>0){
         product.varients[0].attributes.forEach(attr => {
@@ -148,42 +171,7 @@ export class VarientComponent implements OnInit {
       this.createChangePriceForm();
        //reset form validation messages
     },err=>this.err=err );
-    let varientChart = new CanvasJS.Chart("varients", {
-      animationEnabled: true,
-      exportEnabled: true,
-      title: {
-        text: "Varients"
-      },
-      data: [{
-        type: "spline",
-        dataPoints: [
-          { y: 71, label: "Mon" },
-          { y: 55, label: "Tue" },
-          { y: 50, label: "Wed" },
-          { y: 65, label: "Thu" },
-          { y: 95, label: "Fri" },
-          { y: 68, label: "Sat" },
-          { y: 28, label: "Sun" }
-        ]
-        
-      },
-      {
-        type: "spline",
-        dataPoints: [
-          { y: 23, label: "Mon" },
-          { y: 75, label: "Tue" },
-          { y: 20, label: "Wed" },
-          { y: 35, label: "Thu" },
-          { y: 68, label: "Fri" },
-          { y: 32, label: "Sat" },
-          { y: 80, label: "Sun" }
-        ]
-        
-      }
-    ]
-      
-    });
-    varientChart.render();
+    
   }
 
   onVarientSubmit(attributes:string[]){
@@ -233,6 +221,27 @@ export class VarientComponent implements OnInit {
         console.log(body);
         this.varientService.addNewVarient(this.productId, body).subscribe(product =>{
           this.product=product;
+          this.data=[];
+          this.product.varients.forEach(varient => {
+            let d = {y:varient.sales, label:varient._id}
+            this.data.push(d);
+          });
+          let varientChart = new CanvasJS.Chart("varients", {
+            animationEnabled: true,
+            exportEnabled: true,
+            title: {
+              text: "Varients"
+            },
+            data: [
+            {
+              type: "column",
+              dataPoints: this.data
+              
+            }
+          ]
+            
+          });
+          varientChart.render();
           this.attributes=[];
           if(product.varients.length>0){
             product.varients[0].attributes.forEach(attr => {
@@ -479,6 +488,27 @@ export class VarientComponent implements OnInit {
     this.varientService.deleteVarient(this.productId, varientId).subscribe(product =>{
       if(product){
         this.product=product;
+        this.data=[];
+        this.product.varients.forEach(varient => {
+          let d = {y:varient.sales, label:varient._id}
+          this.data.push(d);
+        });
+        let varientChart = new CanvasJS.Chart("varients", {
+          animationEnabled: true,
+          exportEnabled: true,
+          title: {
+            text: "Varients"
+          },
+          data: [
+          {
+            type: "column",
+            dataPoints: this.data
+            
+          }
+        ]
+          
+        });
+        varientChart.render();
         alert("Varient removed Successfully..");
       }
       

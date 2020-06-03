@@ -13,7 +13,7 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <!-- <th scope="col">Image</th> -->
+              <th scope="col">Image</th>
               <th scope="col">First name</th>
               <th scope="col">Last name</th>
               <th scope="cool">Email</th>
@@ -23,7 +23,7 @@
           <tbody>
             <tr *ngFor="let admin of adminUsers; index as i">
               <th scope="row">{{i+1}}</th>
-              <!-- <td><img src="{{userImageUrl+user.image}}" class="profile-picture" alt=""></td> -->
+              <td><img src="{{userImageUrl+admin.image}}" class="profile-picture" alt=""></td>
               <td>{{admin.firstName}}</td>
               <td>{{admin.lastName}}</td>
               <td>{{admin.email}}</td>

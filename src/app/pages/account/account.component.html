@@ -1,1 +1,103 @@
-<p>account works!</p>
+<div class="content">
+    <div class="banner">
+        <div class="container">
+            <h1 class="page-title">Account Details</h1>
+        </div>
+        
+    </div>
+    <div class="container">
+        <div class="row">
+            <div *ngIf="admin" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+                <div class="card">
+                    <div class="card-header">
+                        <img src="{{userImageUrl+admin.image}}" class="profile-picture" alt="">
+                        <p class="text-center"><a class="form-link-edit" (click)="open(photoUpdateContent,'sm')"><i class="fa fa-camera fa-lg"></i></a></p>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="text-center">{{admin.firstName | uppercase}} {{admin.lastName | uppercase}} <span class="edit">(<a class="form-link-edit" (click)="open(nameUpdateContent,'md')">edit</a>)</span></h1>
+                        <h2 class="text-center text-muted">{{admin.email}} <span class="edit">(<a class="form-link-edit" (click)="open(emailUpdateContent,'sm')">edit</a>)</span></h2>
+                        <br>
+                        <p class="text-right"><a class="form-link-edit">Change Password</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #photoUpdateContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Profile Picture</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="changePhotoForm" (ngSubmit)="onChangePhotoSubmit(); modal.dismiss()">
+        <div class="form-group">
+          <label for="image" [ngStyle]="{'color':changePhotoFormErrors.image !== '' ? 'red !important': '' }" class="form-label">Image</label>
+          <input type="file" [ngStyle]="{'border-color':changePhotoFormErrors.image !== '' ? 'red': '' }" placeholder="Image" (change)="selectImage($event)" class="form-control" formControlName="image" accept="image/*" required>
+          <p class="form-error" *ngIf="changePhotoFormErrors.image">{{changePhotoFormErrors.image}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changePhotoForm.invalid">Update Profile Picture</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+
+  <ng-template #nameUpdateContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Name</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="changeNameForm" (ngSubmit)="onChangenameSubmit(); modal.dismiss()">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="firstName"[ngStyle]="{'color':changeNameFormErrors.firstName !== '' ? 'red !important': '' }" class="form-label">First Name</label>
+                    <input type="text"[ngStyle]="{'border-color':changeNameFormErrors.firstName !== '' ? 'red': '' }" placeholder="First Name" class="form-control" formControlName="firstName" required>
+                    <p class="form-error" *ngIf="changeNameFormErrors.firstName">{{changeNameFormErrors.firstName}}</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="lastName"[ngStyle]="{'color':changeNameFormErrors.lastName !== '' ? 'red !important': '' }" class="form-label">Last Name</label>
+                    <input type="text"[ngStyle]="{'border-color':changeNameFormErrors.lastName !== '' ? 'red': '' }" placeholder="Last Name" class="form-control" formControlName="lastName" required>
+                    <p class="form-error" *ngIf="changeNameFormErrors.lastName">{{changeNameFormErrors.lastName}}</p>
+                </div>
+            </div>
+
+        </div>
+        
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changeNameForm.invalid">Update Name</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+
+  <ng-template #emailUpdateContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Email</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="changeEmailForm" (ngSubmit)="onChangeEmailSubmit(); modal.dismiss()">
+        <div class="form-group">
+            <label for="email"[ngStyle]="{'color':changeEmailFormErrors.email !== '' ? 'red !important': '' }" class="form-label">Email Address</label>
+            <input type="email"[ngStyle]="{'border-color':changeEmailFormErrors.email !== '' ? 'red': '' }" placeholder="Email Address" class="form-control" formControlName="email" required>
+            <p class="form-error" *ngIf="changeEmailFormErrors.email">{{changeEmailFormErrors.email}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changeEmailForm.invalid">Update Email</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
