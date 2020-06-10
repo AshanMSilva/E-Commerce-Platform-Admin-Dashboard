@@ -275,6 +275,6 @@ export class ProductComponent implements OnInit {
     document.addEventListener('copy', listener);
     document.execCommand('copy');
     document.removeEventListener('copy', listener);
-}
+  }
 
 }
