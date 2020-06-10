@@ -254,4 +254,15 @@ export class CategoriesComponent implements OnInit {
     return sales
   }
 
+  copyToClipboard(item): void {
+    let listener = (e: ClipboardEvent) => {
+        e.clipboardData.setData('text/plain', (item));
+        e.preventDefault();
+    };
+    alert('Category Id copied to clipboard');
+    document.addEventListener('copy', listener);
+    document.execCommand('copy');
+    document.removeEventListener('copy', listener);
+  }
+
 }

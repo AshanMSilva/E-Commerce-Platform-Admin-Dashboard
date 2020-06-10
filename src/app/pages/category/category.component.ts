@@ -388,6 +388,17 @@ export class CategoryComponent implements OnInit {
     }
   }
 
+  copyToClipboard(item): void {
+    let listener = (e: ClipboardEvent) => {
+        e.clipboardData.setData('text/plain', (item));
+        e.preventDefault();
+    };
+    alert('Id copied to clipboard');
+    document.addEventListener('copy', listener);
+    document.execCommand('copy');
+    document.removeEventListener('copy', listener);
+  }
+
 
   
 

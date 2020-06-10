@@ -266,5 +266,15 @@ export class ProductComponent implements OnInit {
     });
     return count;
   }
+  copyToClipboard(item): void {
+    let listener = (e: ClipboardEvent) => {
+        e.clipboardData.setData('text/plain', (item));
+        e.preventDefault();
+    };
+    alert('Product Id copied to clipboard');
+    document.addEventListener('copy', listener);
+    document.execCommand('copy');
+    document.removeEventListener('copy', listener);
+}
 
 }

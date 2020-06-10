@@ -46,7 +46,7 @@
                 <tbody>
                     <tr *ngFor="let cat of category.subCategories; index as i">
                     <th scope="row">{{i+1}}</th>
-                    <td>{{cat._id}}</td>
+                    <td>{{cat._id}}  <i class="fa fa-clipboard copy-icon" (click)="copyToClipboard(cat._id)"></i> </td>
                     <td><img src="{{categoryImageUrl+cat.image}}" class="cat-image" alt=""></td>
                     <td>{{cat.name}}</td>
                     <td>{{cat.topCategory}}</td>
@@ -79,7 +79,7 @@
                 <tbody>
                     <tr *ngFor="let product of category.products; index as i">
                     <th scope="row">{{i+1}}</th>
-                    <td>{{product._id}}</td>
+                    <td>{{product._id}} <i class="fa fa-clipboard copy-icon" (click)="copyToClipboard(product._id)"></i> </td>
                     <td><img src="{{productImageUrl+product.image}}" class="cat-image" alt=""></td>
                     <td>{{product.brand}}</td>
                     <td>{{product.name}}</td>
