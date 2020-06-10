@@ -4,7 +4,7 @@ import { ProcessHttpmsgService } from '../processHttpmsgService/process-httpmsg.
 import { Admin } from 'src/app/shared/admin';
 import { Observable } from 'rxjs';
 import { baseURL } from 'src/app/shared/baseurl';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -42,4 +42,25 @@ export class AdminService {
   deleteAdmin(adminId:number):Observable<any>{
     return this.http.delete<any>(baseURL+ 'admin/'+adminId).pipe(catchError(this.processHTTPMsgService.handleError));
   }
+  changePassword(adminId: any, body:any):Observable<any>{
+    const httpOptions ={
+      headers: new HttpHeaders({
+        'Content-Type':'application/json'
+      })
+    };
+    return this.http.post<any>(baseURL+ 'admin/'+adminId+'/changePassword', body, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+  }
+  getAdminByEmail(email:string):Observable<Admin[]>{
+    return this.http.get<Admin[]>(baseURL+`admin?email=${email}`).pipe(catchError(this.processHTTPMsgService.handleError));
+  
+  }
+  forgotPassword(adminId: any, body:any):Observable<any>{
+    const httpOptions ={
+      headers: new HttpHeaders({
+        'Content-Type':'application/json'
+      })
+    };
+    return this.http.post<any>(baseURL+ 'admin/'+adminId+'/forgotPassword', body, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
+  }
+
 }

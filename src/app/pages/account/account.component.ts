@@ -22,6 +22,7 @@ export class AccountComponent implements OnInit {
   changePhotoForm: FormGroup;
   changeNameForm: FormGroup;
   changeEmailForm: FormGroup;
+  changePasswordForm: FormGroup;
   changePhotoFormErrors ={
     'image':''
   };
@@ -51,6 +52,24 @@ export class AccountComponent implements OnInit {
       'email': 'Not in Email type'
     }
   };
+  changePasswordFormErrors ={
+    'currentPassword':'',
+    'newPassword':'',
+    'newRePassword':''
+  };
+  changePasswordValidationMessages ={
+    'currentPassword':{
+      'required': 'Current Password is required'
+    },
+    'newPassword':{
+      'required': 'New Password is required',
+      'pattern': 'Must contain at least one number and one uppercase and lowercase letter, at least one special character and at least 6 or more characters without spaces'
+    },
+    'newRePassword':{
+      'required': 'Confirm Password is required',
+      'pattern': 'Must contain at least one number and one uppercase and lowercase letter, at least one special character and at least 6 or more characters without spaces'
+    }
+  };
   image;
   constructor(
     private authService: AuthService,
@@ -70,6 +89,7 @@ export class AccountComponent implements OnInit {
     this.createChangePhotoForm();
     this.createChangeNameForm();
     this.createChangeEmailForm();
+    this.createChangePasswordForm();
     this.authService.getEmail().subscribe(email =>{
       this.adminEmail=email;
       this.adminService.getAdmins().subscribe(admins =>{
@@ -259,6 +279,74 @@ export class AccountComponent implements OnInit {
       }
     })
 
+  }
+
+  createChangePasswordForm(){
+    this.changePasswordForm =this.formBuilder.group({
+      currentPassword:['',[Validators.required]],
+      newPassword:['',[Validators.required, Validators.pattern]],
+      newRePassword:['',[Validators.required, Validators.pattern]]
+      
+      
+    });
+    this.changePasswordForm.valueChanges.subscribe(data=>this.onChangePasswordValueChanged());
+    this.onChangePasswordValueChanged(); //reset form validation messages
+  }
+
+  onChangePasswordValueChanged(){
+    if(!this.changePasswordForm){
+      return;
+    }
+    const form =this.changePasswordForm;
+    for(const field in this.changePasswordFormErrors){
+      if(this.changePasswordFormErrors.hasOwnProperty(field)){
+        //clear previous error messsage(if any)
+        this.changePasswordFormErrors[field]='';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages =this.changePasswordValidationMessages[field];
+          for(const key in control.errors){
+            if(control.errors.hasOwnProperty(key)){
+              this.changePasswordFormErrors[field]+=messages[key] +' ';
+            }
+          }
+        }
+      }
+    }
+  }
+  onChangePasswordSubmit(content, modalSize){
+    let currentPassword = this.changePasswordForm.value['currentPassword'];
+    let newPassword = this.changePasswordForm.value['newPassword'];
+    let newRePassword = this.changePasswordForm.value['newRePassword'];
+    if(newPassword === newRePassword){
+      let body={
+        newpassword:newPassword,
+        oldpassword:currentPassword
+      }
+      this.adminService.changePassword(this.admin._id,body).subscribe(res=>{
+        if(res){
+          if(res.success===true){
+            this.changePasswordForm.reset();
+            alert(res.message);
+            this.authService.logOut();
+            this.router.navigate(['login']);
+          }
+          else{
+            alert(res.message);
+            this.open(content, modalSize);
+
+          }
+        }
+      },  err =>{
+        if(err){
+          alert(err);
+        }
+      })
+    }
+    else{
+      alert('New password and Confirm Password should be same..!');
+      this.open(content,modalSize);
+    }
   }
 
 }

@@ -26,7 +26,7 @@
                                 </form>
                                 <div class="row">
                                     <div class="col-12 col-md-6">
-                                        <a href="" class="text-muted form-link">Forgot Password?</a>
+                                        <a (click)="open(forgotPasswordContent, 'md')" class="text-muted form-link">Forgot Password?</a>
                                     </div>
                             </div>
                         </div>
@@ -40,4 +40,79 @@
         
     </div>
 </div>
+
+<ng-template #changePasswordContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Change Password</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="changePasswordForm" (ngSubmit)="onChangePasswordSubmit(changePasswordContent, 'md'); modal.dismiss()">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="newPassword"[ngStyle]="{'color':changePasswordFormErrors.newPassword !== '' ? 'red !important': '' }" class="form-label">New Password</label>
+                    <input type="password"[ngStyle]="{'border-color':changePasswordFormErrors.newPassword !== '' ? 'red': '' }" placeholder="New Passwords" class="form-control" formControlName="newPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$@#!%*?&]).{6,20}" required>
+                    <p class="form-error" *ngIf="changePasswordFormErrors.newPassword">{{changePasswordFormErrors.newPassword}}</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="rePassword"[ngStyle]="{'color':changePasswordFormErrors.rePassword !== '' ? 'red !important': '' }" class="form-label">Re-Password</label>
+                    <input type="password"[ngStyle]="{'border-color':changePasswordFormErrors.rePassword !== '' ? 'red': '' }" placeholder="New Re-Password" class="form-control" formControlName="rePassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$@#!%*?&]).{6,20}" required>
+                    <p class="form-error" *ngIf="changePasswordFormErrors.rePassword">{{changePasswordFormErrors.rePassword}}</p>
+                </div>
+            </div>
+        </div>
+        
+        
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="changePasswordForm.invalid">Change Password</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+
+  <ng-template #forgotPasswordContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Forgot Password</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPasswordSubmit(forgotPasswordContent, 'md', randomCodeContent, 'sm'); modal.dismiss()">
+        <div class="form-group">
+            <label for="email"[ngStyle]="{'color':forgotPasswordFormErrors.email !== '' ? 'red !important': '' }" class="form-label">Email Address</label>
+            <input type="email"[ngStyle]="{'border-color':forgotPasswordFormErrors.email !== '' ? 'red': '' }" placeholder="Email Address" class="form-control" formControlName="email" required>
+            <p class="form-error" *ngIf="forgotPasswordFormErrors.email">{{forgotPasswordFormErrors.email}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="forgotPasswordForm.invalid">Send Verification Code</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
+  <ng-template #randomCodeContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title modal-header-font" id="modal-basic-title">Verification Code</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="randomCodeForm" (ngSubmit)="onRandomCodeSubmit(changePasswordContent, 'md', randomCodeContent, 'sm'); modal.dismiss()">
+        <div class="form-group">
+            <label for="code"[ngStyle]="{'color':randomCodeFormErrors.code !== '' ? 'red !important': '' }" class="form-label">Verification Code</label>
+            <input type="text"[ngStyle]="{'border-color':randomCodeFormErrors.code !== '' ? 'red': '' }" placeholder="Verification Code" class="form-control" formControlName="code" required>
+            <p class="form-error" *ngIf="randomCodeFormErrors.code">{{randomCodeFormErrors.code}}</p>
+        </div>
+        <button type="submit" mat-button class="login-btn btn-block btn-lg" [disabled]="randomCodeForm.invalid">Submit</button>
+      </form>
+        
+      
+    </div>
+  </ng-template>
 

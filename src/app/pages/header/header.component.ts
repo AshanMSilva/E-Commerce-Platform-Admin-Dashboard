@@ -13,11 +13,12 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: Boolean;
   subscription: Subscription;
   email: String;
-
+  
   
   constructor(
     private authService: AuthService,
     private router: Router
+    
   ) {
     
    }
@@ -46,5 +47,6 @@ export class HeaderComponent implements OnInit {
     console.log(this.isLoggedIn);
     this.router.navigate(['login']);
   }
-
+  
+  
 }
